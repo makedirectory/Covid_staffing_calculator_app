@@ -8,12 +8,14 @@
 #
 
 library(shiny)
+library(tidyverse)
+
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Covid Staff Calculator"),
+    titlePanel("Covid Staff Demand Calculator"),
     
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
@@ -21,21 +23,23 @@ shinyUI(fluidPage(
         # Sidebar panel for inputs ----
         sidebarPanel(
     
-    
     # input n covid pts
-    numericInput("n_covid_pt", "Number of COVID Patient", 100, min = 0, max = 10000, step = 10),
+    numericInput("n_covid_pt", "Total COVID Positive Patients", 100, min = 0, max = 10000, step = 10),
     # ICU ratio
     numericInput("icu_ratio", "Ratio ICU Admission", 0.3, min = 0, max = 1, step = 0.1),
     numericInput("icu_vent_ratio", "Ratio of Vent Among ICU Admission", 0.2, min = 0, max = 1, step = 0.1),
     # general
-    numericInput("covid_general_ratio", "Ratio of Non ICU admission", 0.2, min = 0, max = 1, step = 0.1)
+    numericInput("covid_general_ratio", "Ratio of Non ICU admission", 0.2, min = 0, max = 1, step = 0.1),
         ),
     
     
     mainPanel(
         tabsetPanel(
-            tabPanel("Tab 1",
+            tabPanel("Staff Table",
                      # Output: Header + table of distribution ----
+                     h4("Total"),
+                     tableOutput("table_combine"),
+                     
                      h4("ICU"),
                      tableOutput("table_icu"),
                      
