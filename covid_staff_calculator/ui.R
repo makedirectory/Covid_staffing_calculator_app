@@ -15,7 +15,7 @@ library(tidyverse)
 shinyUI(fluidPage(
 
     # Application title
-    titlePanel("Covid Staff Demand Calculator"),
+    titlePanel("COVID Staffing Demand Calculator"),
     
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
@@ -25,11 +25,17 @@ shinyUI(fluidPage(
     
     # input n covid pts
     numericInput("n_covid_pt", "Total COVID Positive Patients", 100, min = 0, max = 10000, step = 10),
-    # ICU ratio
-    numericInput("icu_ratio", "Ratio ICU Admission", 0.3, min = 0, max = 1, step = 0.1),
-    numericInput("icu_vent_ratio", "Ratio of Vent Among ICU Admission", 0.2, min = 0, max = 1, step = 0.1),
-    # general
-    numericInput("covid_general_ratio", "Ratio of Non ICU admission", 0.2, min = 0, max = 1, step = 0.1),
+    # ICU n pt
+    numericInput("n_pt_icu", "COVID positive patients requiring ICU-level care", 30, min = 0, max = 10000, step = 10),
+    
+    numericInput("n_pt_icu_vent", "ICU-level care ventilator", 20, min = 0, max = 10000, step = 10),
+    
+    helpText(paste0("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings ",
+    "at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic."), 
+    helpText(" “Stretch” ratios are based on current available projections.") ,
+    helpText("** A table of staffing ratios used for these calculations can be found at Reference Table tab")
+)
+    
         ),
     
     
@@ -43,7 +49,7 @@ shinyUI(fluidPage(
                      h4("ICU"),
                      tableOutput("table_icu"),
                      
-                     h4("General"),
+                     h4("Non-ICU"),
                      tableOutput("table_gen")
                      ),
             tabPanel("Reference Table", 
@@ -52,8 +58,8 @@ shinyUI(fluidPage(
                      
                      h4("Non-ICU"),
                      tableOutput("gen_ratio")
-                     ),
-            tabPanel("Tab 3", "This panel is intentionally left blank")
+                     )
+            # tabPanel("Tab 3", "This panel is intentionally left blank")
         )
     )
 )
