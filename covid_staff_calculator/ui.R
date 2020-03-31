@@ -24,15 +24,15 @@ shinyUI(fluidPage(
         sidebarPanel(
     
     # input n covid pts
-    numericInput("n_covid_pt", "Total COVID Positive Patients", 100, min = 0, max = 10000, step = 10),
+    numericInput("n_covid_pt", "Total COVID positive inpatients", 100, min = 0, max = 10000, step = 10),
     # ICU n pt
-    numericInput("n_pt_icu", "COVID positive patients requiring ICU-level care", 30, min = 0, max = 10000, step = 10),
+    numericInput("n_pt_icu", "COVID positive inpatients requiring ICU-level care", 30, min = 0, max = 10000, step = 10),
     
-    numericInput("n_pt_icu_vent", "ICU-level care ventilator", 20, min = 0, max = 10000, step = 10),
+    numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10),
     
     helpText(paste0("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings ",
     "at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic."), 
-    helpText(" “Stretch” ratios are based on current available projections.") ,
+    helpText(" “Stretch” ratios are based on currently available projections.") ,
     helpText("** A table of staffing ratios used for these calculations can be found at Reference Table tab")
 )
     
