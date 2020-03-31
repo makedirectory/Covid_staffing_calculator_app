@@ -22,6 +22,7 @@ covid_general_ratio = 0.6
 #   select(team_structure_id, team_tpye, role, n_bed_per_person, n_bed_per_person_stretch)
 # 
 # save(team_ratio, file = "data/team_ratio.rdata")
+ saveRDS(team_ratio, file = "covid_staff_calculator/data/team_ratio.rds")
 
 # step2: load ratio ------
 load("data/team_ratio.rdata")
