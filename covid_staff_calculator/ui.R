@@ -23,7 +23,7 @@ shinyUI(fluidPage(
     
     
     # input n covid pts
-    numericInput("n_covid_pt", "Number of COVID Patient", 100, min = 1, max = 10000, step = 10),
+    numericInput("n_covid_pt", "Number of COVID Patient", 100, min = 0, max = 10000, step = 10),
     # ICU ratio
     numericInput("icu_ratio", "Ratio ICU Admission", 0.3, min = 0, max = 1, step = 0.1),
     numericInput("icu_vent_ratio", "Ratio of Vent Among ICU Admission", 0.2, min = 0, max = 1, step = 0.1),

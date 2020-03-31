@@ -34,13 +34,12 @@ shinyServer(function(input, output) {
     })
     
     table_gen <- reactive({
-        n_icu_pt = input$n_covid_pt*input$icu_ratio
-        n_icu_pt_vent = ceiling(input$n_icu_pt*input$icu_vent_ratio)
+        n_non_icu_pt = input$n_covid_pt*input$covid_general_ratio
         
-        staff_icu = icu_ratio %>% 
+        staff_icu = gen_ratio %>% 
             transmute(role,
-                      n_staff = ceiling(n_icu_pt/n_bed_per_person),
-                      n_staff_strech = ceiling(n_icu_pt/n_bed_per_person_stretch)) %>% 
+                      n_staff = ceiling(n_non_icu_pt/n_bed_per_person),
+                      n_staff_strech = ceiling(n_non_icu_pt/n_bed_per_person_stretch)) %>% 
             mutate_if(is.numeric, as.integer)
         
     })
@@ -48,12 +47,10 @@ shinyServer(function(input, output) {
     # Table of selected dataset ----
     output$table_icu <- renderTable({
         table_icu()
-
     })
     
     output$table_gen <- renderTable({
         table_gen()
-        
     })
     
 
