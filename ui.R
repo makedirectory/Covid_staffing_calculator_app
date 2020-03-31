@@ -51,7 +51,7 @@ shinyUI(fluidPage(
                             verbatimTextOutput("text"),
                             br(),
                             p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
-                              Stretch ratios are based on current available projections.
+                              Stretch ratios are based on currently available projections.
                               
                               ** A table of staffing ratios used for these calculations can be found at Reference Table tab")
             )
