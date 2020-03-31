@@ -1,0 +1,12 @@
+name: Covid_staffing_calculator_app
+title: Covid_staffing_calculator_app
+username:
+account: simpl-reports
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2031758
+bundleId: 2951269
+url: https://simpl-reports.shinyapps.io/Covid_staffing_calculator_app/
+when: 1585694226.00106
+asMultiple: FALSE
+asStatic: FALSE

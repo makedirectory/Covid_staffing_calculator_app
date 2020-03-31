@@ -13,9 +13,6 @@ library(tidyverse)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-
-    # Application title
-    titlePanel("COVID Staffing Demand Calculator"),
     
     # Sidebar layout with input and output definitions ----
     sidebarLayout(
