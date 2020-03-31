@@ -47,7 +47,7 @@ staff_icu = icu_ratio %>%
 # General --------
 n_pt_covid_gen = n_covid_pt*covid_general_ratio
 
-# icu team ratio 
+# non icu team ratio 
 gen_ratio = team_ratio %>% 
   filter(team_tpye == "General") 
 

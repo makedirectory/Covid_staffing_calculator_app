@@ -35,7 +35,10 @@ shinyUI(fluidPage(
     mainPanel(
         # Output: Header + table of distribution ----
         h4("ICU"),
-        tableOutput("table_icu")
+        tableOutput("table_icu"),
+        
+        h4("General"),
+        tableOutput("table_gen")
     )
 )
 ))
