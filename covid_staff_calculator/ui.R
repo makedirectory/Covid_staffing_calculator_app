@@ -33,12 +33,24 @@ shinyUI(fluidPage(
     
     
     mainPanel(
-        # Output: Header + table of distribution ----
-        h4("ICU"),
-        tableOutput("table_icu"),
-        
-        h4("General"),
-        tableOutput("table_gen")
+        tabsetPanel(
+            tabPanel("Tab 1",
+                     # Output: Header + table of distribution ----
+                     h4("ICU"),
+                     tableOutput("table_icu"),
+                     
+                     h4("General"),
+                     tableOutput("table_gen")
+                     ),
+            tabPanel("Reference Table", 
+                     h4("ICU"),
+                     tableOutput("icu_ratio"),
+                     
+                     h4("Non-ICU"),
+                     tableOutput("gen_ratio")
+                     ),
+            tabPanel("Tab 3", "This panel is intentionally left blank")
+        )
     )
 )
 ))
