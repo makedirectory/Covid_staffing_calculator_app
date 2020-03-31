@@ -30,10 +30,8 @@ shinyUI(fluidPage(
     
     numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10),
     
-    helpText(paste0("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings ",
-    "at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic."), 
-    helpText(" “Stretch” ratios are based on currently available projections.") ,
-    helpText("** A table of staffing ratios used for these calculations can be found at Reference Table tab")
+    helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
+    " (i.e. non-ICU bed converted to ICU-level for COVID response)") 
 )
     
         ),
@@ -50,8 +48,17 @@ shinyUI(fluidPage(
                      tableOutput("table_icu"),
                      
                      h4("Non-ICU"),
-                     tableOutput("table_gen")
-                     ),
+                     tableOutput("table_gen"),
+                     
+                     column(8,
+                            verbatimTextOutput("text"),
+                            br(),
+                            p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
+                              Stretch ratios are based on current available projections.
+                              
+                              ** A table of staffing ratios used for these calculations can be found at Reference Table tab")
+            )
+        ),
             tabPanel("Reference Table", 
                      h4("ICU"),
                      tableOutput("icu_ratio"),
