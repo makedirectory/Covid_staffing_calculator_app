@@ -30,18 +30,18 @@ shinyUI(fluidPage(
     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
     " (i.e. non-ICU bed converted to ICU-level for COVID response)"),
     
-    hr(),
-    titlePanel("Nursing Needs"),
-    fluidRow(column(5,
-                    numericInput("RN_ratio", "Registered Nurse", 100, min = 0, max = 20, step = 5, width = "150px"),
-                    
-    ),
-    column(5, ofset = 3,
-           numericInput("NP_ratio", "Nurse Practitioner /PA", 100, min = 0, max = 20, step = 5, width = "150px"),
-    ),
-    column(5,
-           numericInput("NA_ratio", "NA/LPN", 100, min = 0, max = 20, step = 5, width = "150px"),
-    ))
+    # hr(),
+    # titlePanel("Nursing Needs"),
+    # fluidRow(column(5,
+    #                 numericInput("RN_ratio", "Registered Nurse", 100, min = 0, max = 20, step = 5, width = "150px"),
+    #                 
+    # ),
+    # column(5, ofset = 3,
+    #        numericInput("NP_ratio", "Nurse Practitioner /PA", 100, min = 0, max = 20, step = 5, width = "150px"),
+    # ),
+    # column(5,
+    #        numericInput("NA_ratio", "NA/LPN", 100, min = 0, max = 20, step = 5, width = "150px"),
+    # ))
 )
     
         ),
