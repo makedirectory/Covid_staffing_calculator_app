@@ -27,7 +27,9 @@ n_pt_icu_non_vent = n_pt_icu - n_pt_icu_vent
 #  saveRDS(team_ratio, file = "../covid_staff_calculator/data/team_ratio.rds")
 
 # step2: load ratio ------
-load("./covid_staff_calculator/data/team_ratio.rds")
+team = read_rds("data/team_ratio.rds")
+
+roles = unique(team$role)
 
 
 # step3 assign staff -----
