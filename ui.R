@@ -36,16 +36,17 @@ shinyUI(fluidPage(
     
     mainPanel(
         tabsetPanel(
-            tabPanel("Staff Table",
+            tabPanel("Total Inpatient",
+                     br(),
+                     "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+                     br(),
+                     "Multiply as needed to account for shift changes.",
+                     br(),
+                     br(),
+                     
                      # Output: Header + table of distribution ----
-                     h4("Total"),
+                     # h4("Total"),
                      tableOutput("table_combine"),
-                     
-                     h4("ICU"),
-                     tableOutput("table_icu"),
-                     
-                     h4("Non-ICU"),
-                     tableOutput("table_gen"),
                      
                      column(8,
                             verbatimTextOutput("text"),
@@ -53,17 +54,26 @@ shinyUI(fluidPage(
                             p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
                               Stretch ratios are based on currently available projections.
                               
-                              ** A table of staffing ratios used for these calculations can be found at Reference Table tab")
+                              ** A table of staffing ratios used for these calculations can be found at Reference Table tab"),
+                            
             )
         ),
-            tabPanel("Reference Table", 
-                     h4("ICU"),
-                     tableOutput("icu_ratio"),
-                     
-                     h4("Non-ICU"),
-                     tableOutput("gen_ratio")
-                     )
-            # tabPanel("Tab 3", "This panel is intentionally left blank")
+        tabPanel("ICU", 
+                 # h4("ICU"),
+                 tableOutput("table_icu")),
+        
+        tabPanel("Non-ICU", 
+                 # h4("Non-ICU"),
+                 tableOutput("table_gen")),
+        
+        tabPanel("Assumptions (i.e. staff ratios)", 
+                 h4("ICU"),
+                 tableOutput("icu_ratio"),
+                 
+                 h4("Non-ICU"),
+                 tableOutput("gen_ratio")
+        )
+           
         )
     )
 )

@@ -1,12 +1,3 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(tidyverse)
 
@@ -50,7 +41,7 @@ shinyServer(function(input, output) {
         
         table_icu %>% 
             rename("Staff Demand" = n_staff,
-                   "Staff Demand (Stretch)" = n_staff_strech,
+                   "Staff Demand (Crisis Mode)" = n_staff_strech,
                    Role = role)
     })
     
@@ -59,7 +50,7 @@ shinyServer(function(input, output) {
         
         table_gen %>% 
             rename("Staff Demand" = n_staff,
-                   "Staff Demand (Stretch)" = n_staff_strech,
+                   "Staff Demand (Crisis Mode)" = n_staff_strech,
                    Role = role)
     })
     
@@ -71,19 +62,30 @@ shinyServer(function(input, output) {
             mutate_if(is.numeric, function(x) ifelse(is.infinite(x), NA, x)) %>% 
             tidyext::row_sums(n_staff.x, n_staff.y, varname = "n_normal", na_rm = T) %>% 
             tidyext::row_sums(n_staff_strech.x, n_staff_strech.y, varname = "n_strech", na_rm = T) %>% 
-            transmute(Role = role, "Staff Demand" = n_normal, "Staff Demand (Stretch)" = n_strech) %>% 
+            transmute(Role = role, "Staff Demand" = n_normal, "Staff Demand (Crisis Mode)" = n_strech) %>% 
             mutate_if(is.numeric, as.integer)  
             
     })
     
     output$icu_ratio <- renderTable({
         icu_ratio %>% 
-            select(-team_structure_id)
+            select(-team_structure_id) %>% 
+            rename("Team Type" = team_tpye,
+                   "Bed to Person Ratio" = n_bed_per_person,
+                   "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
+                   Role = role
+                   )
     })
     
     output$gen_ratio <- renderTable({
         gen_ratio %>% 
-            select(-team_structure_id)
+            select(-team_structure_id) %>% 
+            mutate(team_tpye = "Non-ICU") %>% 
+            rename("Team Type" = team_tpye,
+                   "Bed to Person Ratio" = n_bed_per_person,
+                   "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
+                   Role = role
+            ) 
     })
     
 
