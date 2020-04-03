@@ -27,12 +27,17 @@ shinyUI(fluidPage(
     numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10),
     
     hr(),
-    h4("Adding entries to table"),
+    h4("ICU Ratio"),
     selectInput("role", "Role:", choices=unique(team_role)),
     numericInput("ratio", "Ratio", 10, min = 1, max = 100),
     numericInput("ratio_s", "Ratio (Crisis)", 10, min = 1, max = 100),
-    actionButton("update", "Update Ratio"),
+    # actionButton("update", "Update Ratio"),
     
+    h4("Non-ICU Ratio"),
+    selectInput("role_gen", "Role:", choices=unique(team_role_gen)),
+    numericInput("ratio_gen", "Ratio", 10, min = 1, max = 100),
+    numericInput("ratio_s_gen", "Ratio (Crisis)", 10, min = 1, max = 100),
+    actionButton("update", "Update Ratio"),
     
     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
     " (i.e. non-ICU bed converted to ICU-level for COVID response)")
