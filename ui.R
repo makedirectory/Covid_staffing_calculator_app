@@ -33,88 +33,135 @@ team_gen = readRDS("./data/team_ratio.rds") %>%
 team_role_gen = team_gen  %>%
     distinct(role)
 
+# define ui -------
 
-# Define UI ---------
 shinyUI(fluidPage(
-    
-    # Sidebar layout with input and output definitions ----
-    sidebarLayout(
-        
-        # Sidebar panel for inputs ----
-        sidebarPanel(
-    
-    h4("Censes"),
-    # input n covid pts
-    numericInput("n_covid_pt", "Total COVID positive inpatients", 100, min = 0, max = 10000, step = 10,),
-    # ICU n pt
-    numericInput("n_pt_icu", "COVID positive inpatients requiring ICU-level care", 30, min = 0, max = 10000, step = 10,),
-    
-    numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10,),
-    
-    
-   
+    titlePanel("Census qqqqqqqqq"),
     hr(),
-    helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
-    " (i.e. non-ICU bed converted to ICU-level for COVID response)")
-)
+    h3("Census"),
+    div(style="display:inline-block",
+        numericInput("n_covid_pt", "Total COVID positive inpatients",
+                     100, min = 0, max = 10000, step = 10)),
+    div(style="display: inline-block;vertical-align:top; width: 100px;",HTML("<br>")),
     
-        ),
+    div(style="display:inline-block",
+        numericInput("n_covid_pt", "Total COVID positive inpatients",
+                     100, min = 0, max = 10000, step = 10)),
+    div(style="display: inline-block;vertical-align:top; width: 100px;",HTML("<br>")),
     
     
-    mainPanel(
-        fluidRow(
-        tabsetPanel(
-            tabPanel("Total Inpatient",
-                     br(),
-                     "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                     br(),
-                     "Multiply as needed to account for shift changes.",
-                     br(),
-                     br(),
-                     
-                     # Output: Header + table of distribution ----
-                     # h4("Total"),
-                     tableOutput("table_combine"),
-                     
-                     column(8,
-                            verbatimTextOutput("text"),
-                            br(),
-                            p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
-                              Stretch ratios are based on currently available projections.
-                              
-                              ** A table of staffing ratios used for these calculations can be found at Reference Table tab"),
-                            
-            )
-        ),
-        tabPanel("ICU", 
-                 # h4("ICU"),
-                 tableOutput("table_icu")),
-        
-        tabPanel("Non-ICU",
-                 # h4("Non-ICU"),
-                 tableOutput("table_gen")
+    div(style="display:inline-block",
+        numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator",
+                     20, min = 0, max = 10000, step = 10)),
+    div(style="display: inline-block;vertical-align:top; width: 100px;",HTML("<br>")),
+    
+    
 
-        # tabPanel("Assumptions (i.e. staff ratios)", 
-        #          h4("ICU"),
-        #          DTOutput("x1", width = "50%"),
-        #          
-        #          h4("Non-ICU"),
-        #          DTOutput("x2", width = "50%")
-
+    # tables -------
+    fluidRow(
+        column(12,
+               p("This app has a log file which is appended to",
+                 "every second.")
         )
-           
-        )
-        ),
+    ),
+    fluidRow(
+        # column(6, wellPanel(
+        #     "This side uses a reactiveFileReader, which is monitoring",
+        #     "the log file for changes every 0.5 seconds.",
+        #     verbatimTextOutput("fileReaderText")
+        # )),
         
-        hr(),
-        
-        fluidRow(
-            # h4("ICU"),
-            column(5, DTOutput("x1")),
-            
-            # h4("Non-ICU"),
-            column(5, DTOutput("x2"))
-        )
+        column(6, DTOutput("x1", width = "50%"))
     )
 )
-))
+)
+
+
+
+
+
+
+# # Define UI ---------
+# shinyUI(fluidPage(
+#     
+#     # Sidebar layout with input and output definitions ----
+#     sidebarLayout(
+#         
+#         # Sidebar panel for inputs ----
+#         sidebarPanel(
+#     
+#     h4("Censes"),
+#     # input n covid pts
+#     numericInput("n_covid_pt", "Total COVID positive inpatients", 100, min = 0, max = 10000, step = 10,),
+#     # ICU n pt
+#     numericInput("n_pt_icu", "COVID positive inpatients requiring ICU-level care", 30, min = 0, max = 10000, step = 10,),
+#     
+#     numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10,),
+#     
+#     
+#    
+#     hr(),
+#     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
+#     " (i.e. non-ICU bed converted to ICU-level for COVID response)")
+# )
+#     
+#         ),
+#     
+#     
+#     mainPanel(
+#         fluidRow(
+#         tabsetPanel(
+#             tabPanel("Total Inpatient",
+#                      br(),
+#                      "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+#                      br(),
+#                      "Multiply as needed to account for shift changes.",
+#                      br(),
+#                      br(),
+#                      
+#                      # Output: Header + table of distribution ----
+#                      # h4("Total"),
+#                      tableOutput("table_combine"),
+#                      
+#                      column(8,
+#                             verbatimTextOutput("text"),
+#                             br(),
+#                             p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
+#                               Stretch ratios are based on currently available projections.
+#                               
+#                               ** A table of staffing ratios used for these calculations can be found at Reference Table tab"),
+#                             
+#             )
+#         ),
+#         tabPanel("ICU", 
+#                  # h4("ICU"),
+#                  tableOutput("table_icu")),
+#         
+#         tabPanel("Non-ICU",
+#                  # h4("Non-ICU"),
+#                  tableOutput("table_gen")
+# 
+#         # tabPanel("Assumptions (i.e. staff ratios)", 
+#         #          h4("ICU"),
+#         #          DTOutput("x1", width = "50%"),
+#         #          
+#         #          h4("Non-ICU"),
+#         #          DTOutput("x2", width = "50%")
+# 
+#         )
+#            
+#         )
+#         ),
+#         
+#         hr(),
+#         
+#         fluidRow(
+#             # h4("ICU"),
+#             column(5, DTOutput("x1")),
+#             
+#             # h4("Non-ICU"),
+#             column(5, DTOutput("x2"))
+#         )
+#     )
+# )
+# ))
