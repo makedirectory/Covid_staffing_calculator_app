@@ -10,6 +10,29 @@ shinyServer(function(input, output) {
     icu_ratio = team_ratio %>%
         filter(team_tpye == "ICU")
     
+    #interactive -----
+    team_type = readRDS("./data/team_ratio.rds") %>% distinct(team_tpye) %>% pull
+
+    team = readRDS("./data/team_ratio.rds") %>%
+        filter(team_tpye == "ICU") %>%
+        transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
+
+    team_role = team  %>%
+        distinct(role)
+
+    values <- reactiveValues()
+    values$df <- team
+    newEntry <- observe({
+        if(input$update > 0) {
+            newLine <- isolate(tibble(role = input$role, ratio = input$ratio, ratio_s = input$ratio_s))
+            isolate(values$df <- full_join(values$df, newLine, by = "role") %>%
+                        mutate(ratio = ifelse(!is.na(ratio.y), ratio.y, ratio.x),
+                               ratio_s = ifelse(!is.na(ratio_s.y), ratio_s.y, ratio_s.x)) %>%
+                        select(role, ratio, ratio_s))
+        }
+    })
+    
+
     gen_ratio = team_ratio %>% 
         filter(team_tpye == "General") 
     
@@ -67,26 +90,35 @@ shinyServer(function(input, output) {
             
     })
     
+    # output$icu_ratio <- renderTable({
+    #     icu_ratio %>% 
+    #         select(-team_structure_id) %>% 
+    #         rename("Team Type" = team_tpye,
+    #                "Bed to Person Ratio" = n_bed_per_person,
+    #                "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
+    #                Role = role
+    #                )
+    # })
+    
     output$icu_ratio <- renderTable({
-        icu_ratio %>% 
-            select(-team_structure_id) %>% 
-            rename("Team Type" = team_tpye,
-                   "Bed to Person Ratio" = n_bed_per_person,
-                   "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
-                   Role = role
-                   )
+        values$df %>%
+            rename(Role = role) %>% 
+            mutate_if(is.numeric, as.integer)  
     })
     
     output$gen_ratio <- renderTable({
-        gen_ratio %>% 
-            select(-team_structure_id) %>% 
-            mutate(team_tpye = "Non-ICU") %>% 
+        gen_ratio %>%
+            select(-team_structure_id) %>%
+            mutate(team_tpye = "Non-ICU") %>%
             rename("Team Type" = team_tpye,
                    "Bed to Person Ratio" = n_bed_per_person,
                    "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
                    Role = role
-            ) 
+            )
     })
+    
+    
+
     
 
 })
