@@ -38,12 +38,12 @@ shinyServer(function(input, output) {
     
     # formula ---------
     table_icu <- reactive({
-        staff_icu = icu_ratio %>% 
+        staff_icu = icu_ratio %>%
             transmute(role,
                       n_staff = ceiling(input$n_pt_icu/n_bed_per_person),
-                      n_staff_strech = ceiling(input$n_pt_icu/n_bed_per_person_stretch)) %>% 
-            mutate_if(is.numeric, as.integer) 
-    
+                      n_staff_strech = ceiling(input$n_pt_icu/n_bed_per_person_stretch)) %>%
+            mutate_if(is.numeric, as.integer)
+
     })
     
     table_gen <- reactive({
@@ -60,9 +60,11 @@ shinyServer(function(input, output) {
     
     # Table of selected dataset ----
     output$table_icu <- renderTable({
-        table_icu = table_icu()
-        
-        table_icu %>% 
+        values$df %>% 
+            transmute(role,
+                      n_staff = ceiling(input$n_pt_icu/ratio),
+                      n_staff_strech = ceiling(input$n_pt_icu/ratio_s)) %>%
+            mutate_if(is.numeric, as.integer)  %>%
             rename("Staff Demand" = n_staff,
                    "Staff Demand (Crisis Mode)" = n_staff_strech,
                    Role = role)
