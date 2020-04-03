@@ -75,7 +75,7 @@ shinyServer(function(input, output) {
         values$df_gen <- team_gen
     })
     
-    proxy = dataTableProxy('x2')
+    proxy_gen = dataTableProxy('x2')
     
     observeEvent(input$x2_cell_edit, {
         info = input$x2_cell_edit
@@ -85,7 +85,7 @@ shinyServer(function(input, output) {
         v = info$value
         
         values$df_gen[i, j] <- isolate(DT::coerceValue(v, values$df_gen[i, j]))
-        replaceData(proxy, values$df_gen, resetPaging = FALSE)  # important
+        replaceData(proxy_gen, values$df_gen, resetPaging = FALSE)  # important
     })
     
     
