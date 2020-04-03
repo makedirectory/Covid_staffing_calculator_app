@@ -51,33 +51,8 @@ shinyUI(fluidPage(
     
     numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10,),
     
-    # hr(),
-    # h4("ICU Ratio"),
-    # selectInput("role", "Role:", choices=unique(team_role), width = "400px"),
-    # div(style="display:inline-block",
-    #     numericInput("ratio", "Ratio", 2, min = 1, max = 100, width = "150px")),
-    # div(style="display: inline-block;vertical-align:top; width: 100px;",HTML("<br>")),
-    # div(style="display:inline-block",
-    #     numericInput("ratio_s", "Ratio (Crisis)", 4, min = 1, max = 100, width = "150px")),
-    # actionButton("update_icu", "Update Ratio"),
-    # 
-    # hr(),
-    # h4("Non-ICU Ratio"),
-    # selectInput("role_gen", "Role:", choices=unique(team_role_gen), width = "400px"),
-    # div(style="display:inline-block",
-    #     numericInput("ratio_gen", "Ratio", 5, min = 1, max = 100, width = "150px")),
-    # div(style="display: inline-block;vertical-align:top; width: 100px;",HTML("<br>")),
-    # div(style="display:inline-block",
-    #     numericInput("ratio_s_gen", "Ratio (Crisis)", 10, min = 1, max = 100, width = "150px")),
-    # actionButton("update_gen", "Update Ratio"),
-    # 
-    # # color input box
-    # tags$style("#ratio_s_gen {background-color:#D3D3D3;}"),
-    # tags$style("#ratio {background-color:#D3D3D3;}"),
-    # tags$style("#ratio_gen {background-color:#D3D3D3;}"),
-    # tags$style("#ratio_s {background-color:#D3D3D3;}"),
     
-    
+   
     hr(),
     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
     " (i.e. non-ICU bed converted to ICU-level for COVID response)")
@@ -87,6 +62,7 @@ shinyUI(fluidPage(
     
     
     mainPanel(
+        fluidRow(
         tabsetPanel(
             tabPanel("Total Inpatient",
                      br(),
@@ -116,17 +92,28 @@ shinyUI(fluidPage(
         
         tabPanel("Non-ICU",
                  # h4("Non-ICU"),
-                 tableOutput("table_gen")),
+                 tableOutput("table_gen")
 
-        tabPanel("Assumptions (i.e. staff ratios)", 
-                 h4("ICU"),
-                 DTOutput("x1"),
-                 
-                 h4("Non-ICU"),
-                 DTOutput("x2")
+        # tabPanel("Assumptions (i.e. staff ratios)", 
+        #          h4("ICU"),
+        #          DTOutput("x1", width = "50%"),
+        #          
+        #          h4("Non-ICU"),
+        #          DTOutput("x2", width = "50%")
 
         )
            
+        )
+        ),
+        
+        hr(),
+        
+        fluidRow(
+            # h4("ICU"),
+            column(5, DTOutput("x1")),
+            
+            # h4("Non-ICU"),
+            column(5, DTOutput("x2"))
         )
     )
 )

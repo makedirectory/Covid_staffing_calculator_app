@@ -94,16 +94,16 @@ shinyServer(function(input, output) {
                                       rename("Bed to Person Ratio" = ratio,
                                              "Bed to Person Ratio (Crisis Mode)" = ratio_s,
                                              Role = role),
-                                  selection = 'none', 
-                                  editable = TRUE)
+                                  # selection = 'none', 
+                                  editable = TRUE, server = TRUE)
     
     
     output$x2 <- renderDT(values$df_gen %>% 
                                      rename("Bed to Person Ratio" = ratio,
                                             "Bed to Person Ratio (Crisis Mode)" = ratio_s,
                                             Role = role),
-                                 selection = 'none', 
-                                 editable = TRUE)
+                                 # selection = 'none', 
+                                 editable = TRUE, server = TRUE)
     
     
     #  calculate staff needs---------
