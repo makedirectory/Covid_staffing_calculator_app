@@ -1,27 +1,40 @@
 library(shiny)
 library(tidyverse)
 
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
     
+    # read team ratio -----------
     team_ratio = readRDS("./data/team_ratio.rds") %>% 
         mutate_if(is.numeric, as.integer)
     
-    #interactive -----
     team_type = readRDS("./data/team_ratio.rds") %>% distinct(team_tpye) %>% pull
-
+    
     # ICU ratio
     team_icu = readRDS("./data/team_ratio.rds") %>%
         filter(team_tpye == "ICU") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
-
+    
     team_role = team_icu  %>%
         distinct(role)
-
+    
+    # non-icu
+    team_gen = readRDS("./data/team_ratio.rds") %>%
+        filter(team_tpye == "General") %>%
+        transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
+    
+    team_role_gen = team_gen  %>%
+        distinct(role)
+    
+    
+    # interactive 
+    # reference ratio --------
+    # ICU Ratio
     values <- reactiveValues()
     values$df <- team_icu
     newEntry <- observe({
-        if(input$update > 0) {
+        if(input$update_icu > 0) {
             newLine <- isolate(tibble(role = input$role, ratio = input$ratio, ratio_s = input$ratio_s))
             isolate(values$df <- full_join(values$df, newLine, by = "role") %>%
                         mutate(ratio = ifelse(!is.na(ratio.y), ratio.y, ratio.x),
@@ -30,21 +43,10 @@ shinyServer(function(input, output) {
         }
     })
     
-    # non-ICU ratio ------
-    # gen_ratio = team_ratio %>% 
-    #     filter(team_tpye == "General") 
-    
-    team_gen = readRDS("./data/team_ratio.rds") %>%
-        filter(team_tpye == "General") %>%
-        transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
-    
-    team_role_gen = team_gen  %>%
-        distinct(role)
-    
-    # values <- reactiveValues()
+    # non-ICU ratio 
     values$df_gen <- team_gen
     newEntry_gen <- observe({
-        if(input$update > 0) {
+        if(input$update_gen > 0) {
             newLine_gen <- isolate(tibble(role = input$role_gen, ratio = input$ratio_gen, ratio_s = input$ratio_s_gen))
             isolate(values$df_gen <- full_join(values$df_gen, newLine_gen, by = "role") %>%
                         mutate(ratio = ifelse(!is.na(ratio.y), ratio.y, ratio.x),
@@ -54,9 +56,7 @@ shinyServer(function(input, output) {
     })
     
     
-    
-    
-    # formula ---------
+    #  calculate staff needs---------
     icu_staff <- reactive({
          values$df %>% 
             transmute(role,
@@ -103,41 +103,24 @@ shinyServer(function(input, output) {
             
     })
     
-    # output$icu_ratio <- renderTable({
-    #     icu_ratio %>% 
-    #         select(-team_structure_id) %>% 
-    #         rename("Team Type" = team_tpye,
-    #                "Bed to Person Ratio" = n_bed_per_person,
-    #                "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
-    #                Role = role
-    #                )
-    # })
     
     output$icu_ratio <- renderTable({
         values$df %>%
-            rename(Role = role) %>% 
-            mutate_if(is.numeric, as.integer)  
+            rename("Bed to Person Ratio" = ratio,
+                   "Bed to Person Ratio (Crisis Mode)" = ratio_s,
+                   Role = role) %>% 
+        mutate_if(is.numeric, as.integer)  
     })
     
-    # output$gen_ratio <- renderTable({
-    #     gen_ratio %>%
-    #         select(-team_structure_id) %>%
-    #         mutate(team_tpye = "Non-ICU") %>%
-    #         rename("Team Type" = team_tpye,
-    #                "Bed to Person Ratio" = n_bed_per_person,
-    #                "Bed to Person Ratio (Crisis Mode)" = n_bed_per_person_stretch,
-    #                Role = role
-    #         )
-    # })
+   
     
     output$gen_ratio <- renderTable({
         values$df_gen %>%
-            rename(Role = role) %>% 
-            mutate_if(is.numeric, as.integer)  
+            rename("Bed to Person Ratio" = ratio,
+                   "Bed to Person Ratio (Crisis Mode)" = ratio_s,
+                   Role = role) %>% 
+            mutate_if(is.numeric, as.integer)         
     })
-    
-    
-    
     
 
 })
