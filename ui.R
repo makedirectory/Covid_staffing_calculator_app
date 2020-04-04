@@ -41,8 +41,8 @@ shinyUI(fluidPage(
     # step1-------------
     h4("Step 1 - Input your hospital’s patient censuses here (the default values are examples):"),
     # num input style 
-    tags$style("#n_covid_pt {font-size:20px;height:25px; color: gray;}"),
-    tags$style("#n_pt_icu {font-size:20px;height:25px; color: gray;}"),
+    # tags$style("#n_covid_pt {font-size:20px;height:25px; color: gray;}"),
+    # tags$style("#n_pt_icu {font-size:20px;height:25px; color: gray;}"),
     # tags$style("#n_pt_icu {color: red;
     #                              font-size: 20px;
     #                              font-style: italic;
