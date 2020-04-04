@@ -95,7 +95,7 @@ shinyServer(function(input, output) {
                                              "Bed to Person Ratio (Crisis Mode)" = ratio_s,
                                              Role = role),
                                   # selection = 'none', 
-                                  editable = TRUE, server = TRUE)
+                                  editable = TRUE, server = TRUE, rownames=F)
     
     
     output$x2 <- renderDT(values$df_gen %>% 
@@ -103,7 +103,7 @@ shinyServer(function(input, output) {
                                             "Bed to Person Ratio (Crisis Mode)" = ratio_s,
                                             Role = role),
                                  # selection = 'none', 
-                                 editable = TRUE, server = TRUE)
+                                 editable = TRUE, server = TRUE, rownames=F)
     
     
     #  calculate staff needs---------
@@ -124,12 +124,14 @@ shinyServer(function(input, output) {
     })
     
     # Table of selected dataset ----
-    output$table_icu <- renderTable({
-        icu_staff() %>%
-            rename("Staff Demand" = n_staff,
-                   "Staff Demand (Crisis Mode)" = n_staff_strech,
-                   Role = role)
-    })
+    output$table_icu <- renderTable(
+            icu_staff() %>%
+                rename("Staff Demand" = n_staff,
+                       "Staff Demand (Crisis Mode)" = n_staff_strech,
+                       Role = role)
+    )
+    
+    
     
     output$table_gen <- renderTable({
         non_icu_staff() %>%
