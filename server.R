@@ -3,7 +3,6 @@ library(DT)
 library(tidyverse)
 
 
-
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
     
@@ -11,30 +10,24 @@ shinyServer(function(input, output, session) {
     team_ratio = readRDS("./data/team_ratio.rds") %>% 
         mutate_if(is.numeric, as.integer)
     
-    team_type = readRDS("./data/team_ratio.rds") %>% distinct(team_tpye) %>% pull
-    
-    # ICU ratio
+    # ICU 
     team_icu = readRDS("./data/team_ratio.rds") %>%
         filter(team_tpye == "ICU") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
-    
-    team_role = team_icu  %>%
-        distinct(role)
     
     # non-icu
     team_gen = readRDS("./data/team_ratio.rds") %>%
         filter(team_tpye == "General") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
+
     
-    team_role_gen = team_gen  %>%
-        distinct(role)
-    
-    
-    # interactive 
-    
-        # reference ratio --------
+    # interactive --------------------------------------
+
+    # reference ratio --------
+    # editable tables -------
     values <- reactiveValues()
     
+    # ICU
     observe({
         values$df <- team_icu
     })
@@ -48,11 +41,8 @@ shinyServer(function(input, output, session) {
         j = info$col
         v = info$value
         
-        # values$df = datatable(values$df)
-        
         values$df[i, j] <- isolate(coerceValue(v, values$df[i, j]))
-        replaceData(proxy, values$df, resetPaging = FALSE)  # important
-        
+        replaceData(proxy, values$df, resetPaging = FALSE)  
         
     })
     
@@ -71,8 +61,6 @@ shinyServer(function(input, output, session) {
         j = info$col
         v = info$value
         
-        # values$df_gen = datatable(values$df_gen)
-        
         values$df_gen[i, j] <- isolate(DT::coerceValue(v, values$df_gen[i, j]))
         replaceData(proxy_gen, values$df_gen, resetPaging = FALSE)  # important
         
@@ -84,8 +72,8 @@ shinyServer(function(input, output, session) {
     output$x1 <- renderDT(
         values$df %>%
             rename(
-                "P:S" = ratio,
-                "P:S*" = ratio_s,
+                "Ratio" = ratio,
+                "Ratio*" = ratio_s,
                 Role = role
             ) ,
         caption = 'ICU',
@@ -104,8 +92,8 @@ shinyServer(function(input, output, session) {
         values$df_gen %>%
             rename(
                 # "Bed to Person Ratio" = ratio,
-                "P:S" = ratio,
-                "P:S*" = ratio_s,
+                "Ratio" = ratio,
+                "Ratio*" = ratio_s,
                 Role = role
             ),
         caption = 'Non-ICU',
@@ -126,93 +114,95 @@ shinyServer(function(input, output, session) {
     
     
     
-    
     #  calculate staff needs---------
+
     icu_staff <- reactive({
-         values$df %>% 
-            transmute(role,
+        values$df %>% 
+            transmute(team_type = "icu",
+                      role,
                       n_staff = ceiling(input$n_pt_icu/as.numeric(ratio)),
                       n_staff_strech = ceiling(input$n_pt_icu/as.numeric(ratio_s))) %>%
             mutate_if(is.numeric, as.integer)  
     })
     
+    
+    
     non_icu_staff <- reactive({
         values$df_gen %>% 
-            transmute(role,
+            transmute(team_type = "gen",
+                      role,
                       n_staff = ceiling((input$n_covid_pt - input$n_pt_icu)/as.numeric(ratio)),
                       n_staff_strech = ceiling((input$n_covid_pt - input$n_pt_icu)/as.numeric(ratio_s))) %>% 
             mutate_if(is.numeric, as.integer) 
     })
     
-    # Table of selected dataset ----
+    # Display ------
 
-    #icu
-    icu_staff_table = reactive({
-        icu_staff() %>%
-        rename("Staff Demand" = n_staff,
-               "Staff Demand (Crisis Mode)" = n_staff_strech,
-               Role = role) %>% 
-        filter(Role != "")
+    # normal mode
+    norm_staff_table <- reactive({
+        rbind(non_icu_staff(), icu_staff()) %>%
+            select(team_type, role, n_staff) %>%
+            pivot_wider(names_from = team_type,
+                        values_from = n_staff) %>% 
+            tidyext::row_sums(gen, icu, varname = "all", na_rm = TRUE) %>%
+            filter(all != 0) %>% 
+            rename(
+                Role = role,
+                "Non-ICU" = gen,
+                "ICU" = icu,
+                "All Inpatient" = all
+            ) %>% 
+            mutate_if(is.numeric, as.integer) 
     })
     
-    output$table_icu <- renderTable(
-        icu_staff_table()
+    
+    output$table_normal <- renderTable(norm_staff_table() )
+    
+    # crisis mode
+    crisis_staff_table = reactive({
+        rbind(non_icu_staff(), icu_staff()) %>%
+            select(team_type, role, n_staff_strech) %>%
+            pivot_wider(names_from = team_type,
+                        values_from = n_staff_strech) %>% 
+            tidyext::row_sums(gen, icu, varname = "all", na_rm = TRUE) %>% 
+            filter(all != 0) %>% 
+            rename(
+                Role = role,
+                "Non-ICU" = gen,
+                "ICU" = icu,
+                "All Inpatient" = all
+            ) %>% 
+            mutate_if(is.numeric, as.integer)
+    })
+    
+    output$table_crisis <- renderTable(
+        crisis_staff_table() 
     )
-    
-    #gen
-    gen_staff_table = reactive({
-            non_icu_staff() %>%
-                rename("Staff Demand" = n_staff,
-                       "Staff Demand (Crisis Mode)" = n_staff_strech,
-                       Role = role) %>%
-                filter(Role != "")
-        })
-    
-    output$table_gen <- renderTable(
-        gen_staff_table()
-    )
-    
-    # combine
-    combine_staff_table = reactive({
-        staff_icu <- icu_staff()
-        staff_gen <- non_icu_staff()
-        
-        full_join(staff_icu, staff_gen, by = "role") %>% 
-            mutate_if(is.numeric, function(x) ifelse(is.infinite(x), NA, x)) %>% 
-            tidyext::row_sums(n_staff.x, n_staff.y, varname = "n_normal", na_rm = T) %>% 
-            tidyext::row_sums(n_staff_strech.x, n_staff_strech.y, varname = "n_strech", na_rm = T) %>% 
-            transmute(Role = role, "Staff Demand" = n_normal, "Staff Demand (Crisis Mode)" = n_strech) %>% 
-            mutate_if(is.numeric, as.integer)  %>% 
-            filter(Role != "")
-    })
-    
-    output$table_combine <- renderTable({
-        combine_staff_table()
-    })
     
     
     
    # dowload table -------
-    data_list <- reactive({
-        list(
-            Total_Inpatient = combine_staff_table(),
-            ICU = icu_staff_table(),
-            Non_ICU = gen_staff_table()
-        )
-    })
-
+ 
+    output$downloadData_crisis <- downloadHandler(
+      filename = function() {
+        paste('staffing_crisis', Sys.Date(), '.csv', sep='')
+      },
+      content = function(con) {
+        write.csv(crisis_staff_table(), con)
+      }
+    )
     
-   output$downloadData <- downloadHandler(
-       filename = function(){
-           "Staffing_tables.xlsx"
-       },
-       content = function(file) {
-           writexl::write_xlsx(data_list(), path = file)
-       }
-   )
+    
+    output$downloadData_norm <- downloadHandler(
+        filename = function() {
+            paste('staffing_normal', Sys.Date(), '.csv', sep='')
+        },
+        content = function(con) {
+            write.csv(norm_staff_table(), con)
+        }
+    )
     
  
-
     
     
 })

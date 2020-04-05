@@ -82,25 +82,12 @@ shinyUI(fluidPage(
     actionButton("update_gen", "Update Staffing", icon("user-md"),
                  style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
 
-    br(),
-    br(),
-    
-    
-    "Role: List of possible staff roles", 
-    br(),
-    "P:S  = the patient:staff ratio (i.e. how many patients each staff member cares for)",
-    br(),
-    "P:S* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
 
     br(),
     br(),
    
     
-    # step3---------
-    # downloadButton("downloadData", "Download Staffing Tables", 
-    #                style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-    # 
-    
+   
     hr(),
     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
     " (i.e. non-ICU bed converted to ICU-level for COVID response)")
@@ -118,7 +105,7 @@ shinyUI(fluidPage(
         tabsetPanel(
             id="inTabset",
             
-            tabPanel("Total Inpatient",
+            tabPanel("Normal (Tier 1)",
                      br(),
                      "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                      br(),
@@ -128,10 +115,7 @@ shinyUI(fluidPage(
                      
                      # Output: Header + table of distribution ----
                      # h4("Total"),
-                     div(tableOutput("table_combine"), style = "font-size:120%"),
-                     
-                     
-                     
+                     div(tableOutput("table_normal"), style = "font-size:120%"),
                      
                      column(8,
                             verbatimTextOutput("text"),
@@ -147,32 +131,12 @@ shinyUI(fluidPage(
             br(),
             br(),
             br(),
-            downloadButton("downloadData", "Download All Staffing Tables", 
+            downloadButton("downloadData_norm", "Download Normal Staffing", 
                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
             
         ),
-        tabPanel("ICU", 
-                 br(),
-                 "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                 br(),
-                 "Multiply as needed to account for shift changes.",
-                 br(),
-                 br(),
-                 
-                 div(tableOutput("table_icu"), style = "font-size:120%"),
-                 
-                 
-                 column(8,
-                        verbatimTextOutput("text2"),
-                        br(),
-                        p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
-                              Crisis mode ratios are based on currently available projections"),
-                        
-                 ),
-                 
-                 ),
         
-        tabPanel("Non-ICU",
+        tabPanel("Crisis (Tier 2)",
                  br(),
                  "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                  br(),
@@ -180,7 +144,7 @@ shinyUI(fluidPage(
                  br(),
                  br(),
                  
-                 div(tableOutput("table_gen"), style = "font-size:120%"),
+                 div(tableOutput("table_crisis"), style = "font-size:120%"),
                  
                  
                  column(8,
@@ -189,17 +153,44 @@ shinyUI(fluidPage(
                         p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
                               Crisis mode ratios are based on currently available projections"),
                         
-                 )),
+                 ),
+                 
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 downloadButton("downloadData_crisis", "Download Crisis Staffing", 
+                                style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                 
+            
+                 
+                 ),
         
         
         tabPanel("Assumptions (i.e. staff ratios)", 
-                 helpText("Double click the role and ratio to edit"),
+                 br(),
                  
+                 # tags$div(
+                 #     "Role: List of possible staff roles", tags$br(),
+                 #     "Ratio  = the patient:staff ratio (i.e. how many patients each staff member cares for)", tags$br(),
+                 #     "Ratio* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)"),
+                 # 
                      column(div(dataTableOutput ("x1"), style = "font-size: 120%"),
-                     width = 4),
+                     width = 5),
 
                      column(div(dataTableOutput ("x2"), style = "font-size: 120%"),
-                            width = 4, offset = 1)
+                            width = 5, offset = 1),
+
+                 column(12, br(),
+                 tags$div(
+                     "Role: List of possible staff roles", tags$br(),
+                     "Ratio  = the patient:staff ratio (i.e. how many patients each staff member cares for)", tags$br(),
+                     "Ratio* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)")
+                 )
+                 
+                
         )
            
         ),
