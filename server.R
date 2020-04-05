@@ -32,10 +32,6 @@ shinyServer(function(input, output) {
     
     # interactive 
     
-    # ICU Ratio
-    # values$df <- team_icu
-    
-    
         # reference ratio --------
     values <- reactiveValues()
     
@@ -52,7 +48,9 @@ shinyServer(function(input, output) {
         j = info$col
         v = info$value
         
-        values$df[i, j] <- isolate(DT::coerceValue(v, values$df[i, j]))
+        values$df = datatable(values$df)
+        
+        values$df[i, j] <- isolate(coerceValue(v, values$df[i, j]))
         replaceData(proxy, values$df, resetPaging = FALSE)  # important
     })
     

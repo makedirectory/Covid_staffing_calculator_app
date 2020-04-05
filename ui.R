@@ -93,17 +93,12 @@ shinyUI(fluidPage(
 
     br(),
     br(),
-    hr(),
+   
     
     # step3---------
-    h4(
-        "Step 3- Download your results"
-    ),
-    
-    br(),
-    
-    downloadButton("downloadData", "Download Staffing Tables", 
-                   style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+    # downloadButton("downloadData", "Download Staffing Tables", 
+    #                style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+    # 
     
     hr(),
     helpText(paste0("‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
@@ -117,6 +112,8 @@ shinyUI(fluidPage(
         fluidRow(
             
             h3("View your total, ICU, and non-ICU staffing estimates in the table below: "),
+            
+           
         tabsetPanel(
             tabPanel("Total Inpatient",
                      br(),
@@ -131,13 +128,25 @@ shinyUI(fluidPage(
                      div(tableOutput("table_combine"), style = "font-size:120%"),
                      
                      
+                     
+                     
                      column(6,
                             verbatimTextOutput("text"),
                             br(),
                             p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
                               Crisis mode ratios are based on currently available projections"),
                             
-            )
+            ),
+            
+            br(),
+            br(),
+            br(),
+            br(),
+            br(),
+            br(),
+            downloadButton("downloadData", "Download All Staffing Tables", 
+                           style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+            
         ),
         tabPanel("ICU", 
                  br(),
@@ -170,18 +179,31 @@ shinyUI(fluidPage(
                  
                  div(tableOutput("table_gen"), style = "font-size:120%"),
                  
-                 column(6,
+                 
+                 column(8,
                         verbatimTextOutput("text3"),
                         br(),
                         p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
                               Crisis mode ratios are based on currently available projections"),
                         
-                 )
-
+                 ),
+                 
+                 
 
         )
            
-        )
+        ),
+        
+        # br(),
+        # br(),
+        # br(),
+        # br(),
+        # br(),
+        # br(),
+        # downloadButton("downloadData", "Download All Staffing Tables", 
+        #                style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+        
+        
         ),
         
 
