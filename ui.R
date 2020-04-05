@@ -68,6 +68,7 @@ shinyUI(fluidPage(
         step = 10,
         width = "50%"
     ),
+    
     # numericInput("n_pt_icu_vent", "ICU-level inpatients on ventilator", 20, min = 0, max = 10000, step = 10,),
     
     hr(),
@@ -78,9 +79,9 @@ shinyUI(fluidPage(
     ),
     br(),
     
-    actionButton("update_gen", "Update Staffing", icon("user-md"), 
+    actionButton("update_gen", "Update Staffing", icon("user-md"),
                  style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-    
+
     br(),
     br(),
     
@@ -115,6 +116,8 @@ shinyUI(fluidPage(
             
            
         tabsetPanel(
+            id="inTabset",
+            
             tabPanel("Total Inpatient",
                      br(),
                      "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
@@ -130,7 +133,7 @@ shinyUI(fluidPage(
                      
                      
                      
-                     column(6,
+                     column(8,
                             verbatimTextOutput("text"),
                             br(),
                             p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
@@ -159,7 +162,7 @@ shinyUI(fluidPage(
                  div(tableOutput("table_icu"), style = "font-size:120%"),
                  
                  
-                 column(6,
+                 column(8,
                         verbatimTextOutput("text2"),
                         br(),
                         p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
@@ -186,41 +189,38 @@ shinyUI(fluidPage(
                         p("* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
                               Crisis mode ratios are based on currently available projections"),
                         
-                 ),
+                 )),
+        
+        
+        tabPanel("Assumptions (i.e. staff ratios)", 
+                 helpText("Double click the role and ratio to edit"),
                  
-                 
+                     column(div(dataTableOutput ("x1"), style = "font-size: 120%"),
+                     width = 4),
 
+                     column(div(dataTableOutput ("x2"), style = "font-size: 120%"),
+                            width = 4, offset = 1)
         )
            
         ),
-        
-        # br(),
-        # br(),
-        # br(),
-        # br(),
-        # br(),
-        # br(),
-        # downloadButton("downloadData", "Download All Staffing Tables", 
-        #                style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
-        
-        
+     
         ),
         
 
     )
 )
-),
-        fluidRow(
-            
-            hr(),
-            
-            br(),
-            
-
-            column(div(dataTableOutput ("x1"), style = "font-size: 120%"),
-            width = 4, offset = 2),
-            
-            column(div(dataTableOutput ("x2"), style = "font-size: 120%"),
-                   width = 4)
-        )
+)
+        # fluidRow(
+        #     
+        #     hr(),
+        #     
+        #     br(),
+        #     
+        # 
+        #     column(div(dataTableOutput ("x1"), style = "font-size: 120%"),
+        #     width = 4, offset = 2),
+        #     
+        #     column(div(dataTableOutput ("x2"), style = "font-size: 120%"),
+        #            width = 4)
+        # )
 ))

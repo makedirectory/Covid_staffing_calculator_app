@@ -5,7 +5,7 @@ library(tidyverse)
 
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
     
     # read team ratio -----------
     team_ratio = readRDS("./data/team_ratio.rds") %>% 
@@ -48,10 +48,12 @@ shinyServer(function(input, output) {
         j = info$col
         v = info$value
         
-        values$df = datatable(values$df)
+        # values$df = datatable(values$df)
         
         values$df[i, j] <- isolate(coerceValue(v, values$df[i, j]))
         replaceData(proxy, values$df, resetPaging = FALSE)  # important
+        
+        
     })
     
     
@@ -69,52 +71,56 @@ shinyServer(function(input, output) {
         j = info$col
         v = info$value
         
+        # values$df_gen = datatable(values$df_gen)
+        
         values$df_gen[i, j] <- isolate(DT::coerceValue(v, values$df_gen[i, j]))
         replaceData(proxy_gen, values$df_gen, resetPaging = FALSE)  # important
+        
     })
     
 
     
     # reference table display ---------
+    output$x1 <- renderDT(
+        values$df %>%
+            rename(
+                "P:S" = ratio,
+                "P:S*" = ratio_s,
+                Role = role
+            ) ,
+        caption = 'ICU',
+        selection = 'none',
+        editable = TRUE,
+        server = TRUE,
+        options = list(dom = "t", 
+                       autoWidth = TRUE,
+                       columnDefs = list(list(width = '150px', targets = "_all")),
+                       pageLength = 15),
+    )
+    
+    
+    
+    output$x2 <- renderDT(
+        values$df_gen %>%
+            rename(
+                # "Bed to Person Ratio" = ratio,
+                "P:S" = ratio,
+                "P:S*" = ratio_s,
+                Role = role
+            ),
+        caption = 'Non-ICU',
+        selection = 'none',
+        editable = TRUE,
+        server = TRUE,
+        options = list(dom = "t", 
+                       autoWidth = TRUE,
+                       columnDefs = list(list(width = '150px', targets = "_all")),
+                       pageLength = 15
+        )
+    )
+    
     observeEvent(input$update_gen, {
-    
-        output$x1 <- renderDT(
-            values$df %>%
-                rename(
-                    "P:S" = ratio,
-                    "P:S*" = ratio_s,
-                    Role = role
-                ) ,
-            caption = 'ICU',
-            selection = 'none',
-            editable = TRUE,
-            server = TRUE,
-            options = list(dom = "t", 
-                           autoWidth = TRUE,
-                           columnDefs = list(list(width = '150px', targets = "_all")),
-                           pageLength = 15),
-        )
-    
-        
-    
-        output$x2 <- renderDT(
-            values$df_gen %>%
-                rename(
-                    # "Bed to Person Ratio" = ratio,
-                    "P:S" = ratio,
-                    "P:S*" = ratio_s,
-                    Role = role
-                ),
-            caption = 'Non-ICU',
-            selection = 'none',
-            editable = TRUE,
-            server = TRUE,
-            options = list(dom = "t", 
-                           autoWidth = TRUE,
-                           columnDefs = list(list(width = '150px', targets = "_all")),
-                           pageLength = 15
-                           )
-        )
+        updateTabsetPanel(session, "inTabset",selected = "Assumptions (i.e. staff ratios)")
     })
     
     
