@@ -90,14 +90,6 @@ shinyUI(fluidPage(fluidRow(
         mainPanel(fluidRow(
             h3("View your total, ICU, and non-ICU staffing estimates in the table below: "),
             
-            
-        # tab color ----    
-  #           tags$style(HTML("
-  #   .tabbable > .nav > li > a[data-value='Normal (Tier 1)'] {background-color: green;  color:black}
-  #   .tabbable > .nav > li > a[data-value='Crisis (Tier 2)'] {background-color: red;   color:white}
-  #   .tabbable > .nav > li > a[data-value='Patient to Staff Ratio'] {background-color: gray;  color:white}
-  #   .tabbable > .nav > li[class=active]    > a {background-color: black; color:white}
-  # ")),
   
             tags$style(HTML("
         .tabbable > .nav > li[class=active]    > a[data-value='Normal (Tier 1)'] {background-color: #9dc183; color:black}
@@ -159,8 +151,8 @@ shinyUI(fluidPage(fluidRow(
                         verbatimTextOutput("text3"),
                         br(),
                         p(
-                            "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
-                              Crisis mode ratios are based on currently available projections"
+                            "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
+                              Crisis mode ratios are based on currently available projections."
                         )
                         
                     ),
@@ -177,7 +169,7 @@ shinyUI(fluidPage(fluidRow(
                 
                 # editable ratio --------
                 tabPanel(
-                    "Patient to Staff Ratio",
+                    "Patient to Staff Ratios",
                     br(),
                     
                     helpText(strong("Important note:"), 
