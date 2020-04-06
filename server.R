@@ -32,9 +32,9 @@ shinyServer(function(input, output, session) {
     values <- reactiveValues()
     
     # reset reference table -------
-    reset_table = tibble(role = as.character(rep(NA,5)),
-                         ratio = rep(0, 5),
-                         ratio_s = rep(0, 5))
+    reset_table = tibble(role = c("Role1", NA, NA),
+                         ratio = as.numeric(rep(0, 3)),
+                         ratio_s = as.numeric(rep(0, 3)))
     
     
     observeEvent(input$reset,{
@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
     # buttons --------
     
     observeEvent(input$update_gen, {
-        updateTabsetPanel(session, "inTabset",selected = "Assumptions (i.e. staff ratios)")
+        updateTabsetPanel(session, "inTabset",selected = "Patient to Staff Ratio")
     })
     
     observeEvent(input$calculate, {
@@ -142,6 +142,7 @@ shinyServer(function(input, output, session) {
                                                    n_staff = ceiling(input$n_pt_icu/as.numeric(ratio)),
                                                    n_staff_strech = ceiling(input$n_pt_icu/as.numeric(ratio_s))) %>%
                                          mutate_if(is.numeric, as.integer))
+        
         
         # if edit
         values$df = hot_to_r(input$x1) %>%
@@ -281,16 +282,45 @@ shinyServer(function(input, output, session) {
         }
     )
     
-
-    
-    output$downloadData_ratio <- downloadHandler(
+    output$downloadData_all_ratio <- downloadHandler(
         filename = function() {
-            paste('Staffing_role_and_ratio', Sys.Date(), '.csv', sep='')
+            paste('Staffing_role_and_ratio', Sys.Date(), '.xlsx', sep='')
         },
         content = function(con) {
-            write.csv(norm_staff_table(), con)
+            finalDF <- hot_to_r(input$x1) %>% 
+                mutate(team_tpye = "ICU") %>% 
+                rename(role = Role,
+                       n_bed_per_person = "Ratio (Normal)" ,
+                       n_bed_per_person_stretch = "Ratio (Crisis Mode)") %>% 
+                select(team_tpye, everything())
+            
+            finalDF_non_icu <- hot_to_r(input$x2) %>% 
+                mutate(team_tpye = "General") %>% 
+                rename(role = Role,
+                       n_bed_per_person = "Ratio (Normal)" ,
+                       n_bed_per_person_stretch = "Ratio (Crisis Mode)") %>% 
+                select(team_tpye, everything())
+            
+            
+            all_ratio = rbind(finalDF, finalDF_non_icu)
+            
+            writexl::write_xlsx(all_ratio, path = con)
         }
     )
+    
+
+    
+    # output$downloadData_ratio <- downloadHandler(
+    #     filename = function() {
+    #         paste('Staffing_role_and_ratio', Sys.Date(), '.csv', sep='')
+    #     },
+    #     content = function(con) {
+    #         write.csv(norm_staff_table(), con)
+    #     }
+    # )
+    
+    
+   
     
 
 

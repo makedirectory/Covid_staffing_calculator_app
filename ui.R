@@ -42,7 +42,7 @@ shinyUI(fluidPage(fluidRow(
             numericInput(
                 "n_covid_pt",
                 "Total COVID+ Inpatients (ICU and Non-ICU)",
-                1000,
+                180,
                 min = 0,
                 max = 1000,
                 step = 10,
@@ -53,7 +53,7 @@ shinyUI(fluidPage(fluidRow(
             numericInput(
                 "n_pt_icu",
                 "COVID+ ICU Inpatients",
-                300,
+                60,
                 min = 0,
                 max = 1000,
                 step = 10,
@@ -71,7 +71,7 @@ shinyUI(fluidPage(fluidRow(
             br(),
             
             actionButton("update_gen", "Update Staffing", icon("user-md"),
-                         style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                         style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
             
             
             br(),
@@ -89,6 +89,20 @@ shinyUI(fluidPage(fluidRow(
         # main tables display ------------
         mainPanel(fluidRow(
             h3("View your total, ICU, and non-ICU staffing estimates in the table below: "),
+            
+            
+        # tab color ----    
+  #           tags$style(HTML("
+  #   .tabbable > .nav > li > a[data-value='Normal (Tier 1)'] {background-color: green;  color:black}
+  #   .tabbable > .nav > li > a[data-value='Crisis (Tier 2)'] {background-color: red;   color:white}
+  #   .tabbable > .nav > li > a[data-value='Patient to Staff Ratio'] {background-color: gray;  color:white}
+  #   .tabbable > .nav > li[class=active]    > a {background-color: black; color:white}
+  # ")),
+  
+            tags$style(HTML("
+        .tabbable > .nav > li[class=active]    > a[data-value='Normal (Tier 1)'] {background-color: #9dc183; color:black}
+        .tabbable > .nav > li[class=active]    > a[data-value='Crisis (Tier 2)'] {background-color: #8D021F; color:white}
+  ")),
             
             tabsetPanel(
                 id = "inTabset",
@@ -125,7 +139,7 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     downloadButton("downloadData_norm", "Download Normal Staffing",
-                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                     
                 ),
                 
@@ -158,23 +172,29 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     downloadButton("downloadData_crisis", "Download Crisis Staffing",
-                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4")
+                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                 ),
                 
                 # editable ratio --------
                 tabPanel(
-                    "Assumptions (i.e. staff ratios)",
+                    "Patient to Staff Ratio",
                     br(),
+                    
+                    helpText(strong("Important note:"), 
+                             "These estimates are designed to give a sense of general staffing needs, but your needs may vary based on local conditions."),
+                    
+            
+                    
                     actionButton("calculate", "Calculate Results", icon("calculator"),
-                                 style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                                 style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     br(),
                     br(),
                     
                     actionButton("reset", "Clear Table", icon("table"),
-                                 style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                                 style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     actionButton("reset_to_ori", "Reset to Default", icon("undo"),
-                                 style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                                 style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     
                     br(),
@@ -186,9 +206,9 @@ shinyUI(fluidPage(fluidRow(
                     
                     br(), 
                     
-                    downloadButton("downloadData_icu_ratio", "Download ICU Staffing Ratio",
-                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
-                
+                    # downloadButton("downloadData_icu_ratio", "Download ICU Staffing Ratio",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
+                    
                     
                     h5("Non-ICU"),
                     
@@ -197,8 +217,12 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     
                     
-                    downloadButton("downloadData_non_icu_ratio", "Download Non-ICU Staffing Ratio",
-                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                    # downloadButton("downloadData_non_icu_ratio", "Download Non-ICU Staffing Ratio",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
+                    
+                    
+                    downloadButton("downloadData_all_ratio", "Download All Staffing Ratio",
+                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     
                     column(
