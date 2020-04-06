@@ -104,7 +104,8 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     
                     # table
-                    tableOutput("table_normal"),
+                    div(tableOutput("table_normal"), style = "font-size:120%"),
+                    
                     
                     column(
                         8,
@@ -137,9 +138,8 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     
-                    # div(tableOutput("table_crisis"), style = "font-size:120%"),
-                    tableOutput("table_crisis"),
-                    
+                    div(tableOutput("table_crisis"), style = "font-size:120%"),
+
                     column(
                         8,
                         verbatimTextOutput("text3"),
@@ -168,20 +168,37 @@ shinyUI(fluidPage(fluidRow(
                     actionButton("calculate", "Calculate Results", icon("calculator"),
                                  style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                     
-                    actionButton("reset", "Your Own Role and Ratio"),
-                    
+                    br(),
                     br(),
                     
+                    actionButton("reset", "Clear Table", icon("table"),
+                                 style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                    actionButton("reset_to_ori", "Reset to Default", icon("undo"),
+                                 style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                    
+                    
+                    br(),
+                    helpText(strong("Right click"), "in a cell to add and delete row.;", strong("Double click"), "in a cell to edit."),
+
                     h5("ICU"),
                     
                     div(rHandsontableOutput("x1"), style = "font-size: 120%"),
                     
                     br(), 
+                    
+                    downloadButton("downloadData_icu_ratio", "Download ICU Staffing Ratio",
+                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                 
                     
                     h5("Non-ICU"),
                     
                     div(rHandsontableOutput("x2"), style = "font-size: 120%"),
+                    
+                    br(),
+                    
+                    
+                    downloadButton("downloadData_non_icu_ratio", "Download Non-ICU Staffing Ratio",
+                                   style = "color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                     
                     
                     column(
@@ -190,12 +207,12 @@ shinyUI(fluidPage(fluidRow(
                         tags$div(
                             "Role: List of possible staff roles",
                             tags$br(),
-                            "Ratio  = the patient:staff ratio (i.e. how many patients each staff member cares for)",
+                            "Ratio (normal) = the patient:staff ratio (i.e. how many patients each staff member cares for)",
                             tags$br(),
-                            "Ratio* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)"
+                            "Ratio (Crisis Mode) = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)"
                         )
                     )
-                    
+
                 )
                 
             ),

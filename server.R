@@ -21,6 +21,7 @@ shinyServer(function(input, output, session) {
     team_gen = readRDS("./data/team_ratio.rds") %>%
         filter(team_tpye == "General") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
+    
 
     
     # interactive --------------------------------------
@@ -30,31 +31,92 @@ shinyServer(function(input, output, session) {
     # editable tables -------
     values <- reactiveValues()
     
+    # reset reference table -------
+    reset_table = tibble(role = as.character(rep(NA,5)),
+                         ratio = rep(0, 5),
+                         ratio_s = rep(0, 5))
+    
+    
+    observeEvent(input$reset,{
+        output$x1 <- renderRHandsontable({
+            rhandsontable(
+                reset_table %>%
+                    rename(
+                        "Ratio (Normal)" = ratio,
+                        "Ratio (Crisis Mode)" = ratio_s,
+                        Role = role
+                    ) %>%
+                    mutate_if(is.numeric, as.integer)
+            )
+        })
+        
+        output$x2 <- renderRHandsontable({
+            rhandsontable(
+                reset_table %>% 
+                    rename(
+                        "Ratio (Normal)" = ratio,
+                        "Ratio (Crisis Mode)" = ratio_s,
+                        Role = role
+                    ) %>%
+                    mutate_if(is.numeric, as.integer)
+            )
+        })
+    })
+    
+    # reset to default
+    observeEvent(input$reset_to_ori,{
+        output$x1 <- renderRHandsontable({
+            rhandsontable(
+                team_icu %>%
+                    rename(
+                        "Ratio (Normal)" = ratio,
+                        "Ratio (Crisis Mode)" = ratio_s,
+                        Role = role
+                    ) %>%
+                    mutate_if(is.numeric, as.integer)
+            ) 
+        })
+        
+        output$x2 <- renderRHandsontable({
+            rhandsontable(
+                team_gen %>% 
+                    rename(
+                        "Ratio (Normal)" = ratio,
+                        "Ratio (Crisis Mode)" = ratio_s,
+                        Role = role
+                    ) %>%
+                    mutate_if(is.numeric, as.integer)
+            ) 
+        })
+    })
+    
+    
+    
+    
     # reference table (editable) ---------
     output$x1 <- renderRHandsontable({
         rhandsontable(
             team_icu %>%
                 rename(
-                    "Ratio" = ratio,
-                    "Ratio*" = ratio_s,
+                    "Ratio (Normal)" = ratio,
+                    "Ratio (Crisis Mode)" = ratio_s,
                     Role = role
                 ) %>%
-                mutate_if(is.numeric, as.integer)
-        )
+                mutate_if(is.numeric, as.integer) 
+        ) 
     })
     
     output$x2 <- renderRHandsontable({
         rhandsontable(
             team_gen %>% 
                 rename(
-                    "Ratio" = ratio,
-                    "Ratio*" = ratio_s,
+                    "Ratio (Normal)" = ratio,
+                    "Ratio (Crisis Mode)" = ratio_s,
                     Role = role
                 ) %>%
                 mutate_if(is.numeric, as.integer)
-        )
-    })
-    
+        ) 
+        })
     
 
     
@@ -85,8 +147,8 @@ shinyServer(function(input, output, session) {
         values$df = hot_to_r(input$x1) %>%
             # rename back ---- 
         rename(
-            ratio = Ratio,
-            ratio_s = "Ratio*",
+            ratio = "Ratio (Normal)",
+            ratio_s = "Ratio (Crisis Mode)",
             role = Role
         ) %>%
             
@@ -111,8 +173,8 @@ shinyServer(function(input, output, session) {
         values$df_gen = hot_to_r(input$x2) %>% 
             # rename back ---- 
         rename(
-            ratio = Ratio,
-            ratio_s = "Ratio*",
+            ratio = "Ratio (Normal)",
+            ratio_s = "Ratio (Crisis Mode)",
             role = Role
         ) %>%
             
@@ -191,6 +253,39 @@ shinyServer(function(input, output, session) {
     output$downloadData_norm <- downloadHandler(
         filename = function() {
             paste('staffing_normal', Sys.Date(), '.csv', sep='')
+        },
+        content = function(con) {
+            write.csv(norm_staff_table(), con)
+        }
+    )
+    
+    
+    output$downloadData_icu_ratio <- downloadHandler(
+        filename = function() {
+            paste('ICU_Staffing_role_and_ratio', Sys.Date(), '.csv', sep='')
+        },
+        content = function(con) {
+            finalDF <- hot_to_r(input$x1)
+            write.csv(finalDF, con)
+        }
+    )
+    
+    
+    output$downloadData_non_icu_ratio <- downloadHandler(
+        filename = function() {
+            paste('Non_icu_Staffing_role_and_ratio', Sys.Date(), '.csv', sep='')
+        },
+        content = function(con) {
+            finalDF_non_icu <- hot_to_r(input$x2)
+            write.csv(finalDF_non_icu, con)
+        }
+    )
+    
+
+    
+    output$downloadData_ratio <- downloadHandler(
+        filename = function() {
+            paste('Staffing_role_and_ratio', Sys.Date(), '.csv', sep='')
         },
         content = function(con) {
             write.csv(norm_staff_table(), con)
