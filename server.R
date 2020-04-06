@@ -24,6 +24,18 @@ shinyServer(function(input, output, session) {
     # interactive --------------------------------------
 
     # reference ratio --------
+    # reset table --------
+    reset_table = tibble(role = rep(NA,15),
+                         ratio = rep(0, 15),
+                         ratio_s = rep(0, 15))
+    
+    
+    observeEvent(input$reset,{
+        values$df <- reset_table
+        values$df_gen <- reset_table
+    })
+    
+    
     # editable tables -------
     values <- reactiveValues()
     
@@ -31,20 +43,21 @@ shinyServer(function(input, output, session) {
     observe({
         values$df <- team_icu
     })
-    
+
     proxy = dataTableProxy('x1')
-    
+
     observeEvent(input$x1_cell_edit, {
         info = input$x1_cell_edit
         str(info)
         i = info$row
         j = info$col
         v = info$value
-        
+
         values$df[i, j] <- isolate(coerceValue(v, values$df[i, j]))
-        replaceData(proxy, values$df, resetPaging = FALSE)  
-        
+        replaceData(proxy, values$df, resetPaging = FALSE)
+
     })
+
     
     
     # Non-ICU
@@ -107,8 +120,14 @@ shinyServer(function(input, output, session) {
         )
     )
     
+    # buttons --------
+    
     observeEvent(input$update_gen, {
         updateTabsetPanel(session, "inTabset",selected = "Assumptions (i.e. staff ratios)")
+    })
+    
+    observeEvent(input$calculate, {
+        updateTabsetPanel(session, "inTabset",selected = "Normal (Tier 1)")
     })
     
     
@@ -118,6 +137,7 @@ shinyServer(function(input, output, session) {
 
     icu_staff <- reactive({
         values$df %>% 
+            filter(!is.na(role)) %>% 
             transmute(team_type = "icu",
                       role,
                       n_staff = ceiling(input$n_pt_icu/as.numeric(ratio)),
@@ -129,6 +149,7 @@ shinyServer(function(input, output, session) {
     
     non_icu_staff <- reactive({
         values$df_gen %>% 
+            filter(!is.na(role)) %>% 
             transmute(team_type = "gen",
                       role,
                       n_staff = ceiling((input$n_covid_pt - input$n_pt_icu)/as.numeric(ratio)),
@@ -141,6 +162,7 @@ shinyServer(function(input, output, session) {
     # normal mode
     norm_staff_table <- reactive({
         rbind(non_icu_staff(), icu_staff()) %>%
+            filter(!is.na(role)) %>% 
             select(team_type, role, n_staff) %>%
             pivot_wider(names_from = team_type,
                         values_from = n_staff) %>% 
@@ -161,6 +183,7 @@ shinyServer(function(input, output, session) {
     # crisis mode
     crisis_staff_table = reactive({
         rbind(non_icu_staff(), icu_staff()) %>%
+            filter(!is.na(role)) %>% 
             select(team_type, role, n_staff_strech) %>%
             pivot_wider(names_from = team_type,
                         values_from = n_staff_strech) %>% 
@@ -202,7 +225,7 @@ shinyServer(function(input, output, session) {
         }
     )
     
- 
-    
+
+
     
 })

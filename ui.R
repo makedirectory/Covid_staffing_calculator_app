@@ -171,14 +171,18 @@ shinyUI(fluidPage(
         
         tabPanel("Assumptions (i.e. staff ratios)", 
                  br(),
+                 actionButton("calculate", "Calculate Results", icon("calculator"),
+                              style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                  
-                 # tags$div(
-                 #     "Role: List of possible staff roles", tags$br(),
-                 #     "Ratio  = the patient:staff ratio (i.e. how many patients each staff member cares for)", tags$br(),
-                 #     "Ratio* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)"),
-                 # 
+                 actionButton("reset", "Your Own Role and Ratio"),
+
+                 br(),
+               
                      column(div(dataTableOutput ("x1"), style = "font-size: 120%"),
                      width = 5),
+                 
+                 
+                 rHandsontableOutput("x1"),
 
                      column(div(dataTableOutput ("x2"), style = "font-size: 120%"),
                             width = 5, offset = 1),
@@ -189,7 +193,6 @@ shinyUI(fluidPage(
                      "Ratio  = the patient:staff ratio (i.e. how many patients each staff member cares for)", tags$br(),
                      "Ratio* = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)")
                  )
-                 
                 
         )
            
