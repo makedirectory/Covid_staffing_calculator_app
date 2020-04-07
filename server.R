@@ -296,18 +296,18 @@ shinyServer(function(input, output, session) {
         },
         content = function(con) {
             finalDF <- hot_to_r(input$x1) %>% 
-                mutate(team_tpye = "ICU") %>% 
+                mutate(team_type = "ICU") %>% 
                 rename(role = Role,
                        n_bed_per_person = "Ratio (Normal)" ,
-                       n_bed_per_person_stretch = "Ratio (Crisis Mode)") %>% 
-                select(team_tpye, everything())
+                       n_bed_per_person_crisis = "Ratio (Crisis Mode)") %>% 
+                select(team_type, everything())
             
             finalDF_non_icu <- hot_to_r(input$x2) %>% 
-                mutate(team_tpye = "General") %>% 
+                mutate(team_type = "General") %>% 
                 rename(role = Role,
                        n_bed_per_person = "Ratio (Normal)" ,
-                       n_bed_per_person_stretch = "Ratio (Crisis Mode)") %>% 
-                select(team_tpye, everything())
+                       n_bed_per_person_crisis = "Ratio (Crisis Mode)") %>% 
+                select(team_type, everything())
             
             
             all_ratio = rbind(finalDF, finalDF_non_icu)
