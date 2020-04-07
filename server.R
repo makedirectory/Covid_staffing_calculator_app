@@ -131,7 +131,7 @@ shinyServer(function(input, output, session) {
     # buttons --------
     
     observeEvent(input$update_gen, {
-        updateTabsetPanel(session, "inTabset",selected = "Patient to Staff Ratios")
+        updateTabsetPanel(session, "inTabset",selected = "Patient-to-Staff Ratios")
     })
     
     observeEvent(input$calculate, {

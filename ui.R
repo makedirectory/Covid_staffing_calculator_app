@@ -144,10 +144,12 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_norm", "Download Normal Staffing",
+                    downloadButton("downloadData_norm", "Download Table Above",
                                    style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                     
                 ),
+                
+                # crisis mode ----
                 
                 tabPanel(
                     "Crisis (Tier 2)",
@@ -177,13 +179,13 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_crisis", "Download Crisis Staffing",
+                    downloadButton("downloadData_crisis", "Download Table Above",
                                    style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                 ),
                 
                 # editable ratio --------
                 tabPanel(
-                    "Patient to Staff Ratios",
+                    "Patient-to-Staff Ratios",
                     br(),
                     
                     helpText(strong("Important note:"), 
@@ -223,7 +225,7 @@ shinyUI(fluidPage(fluidRow(
                     #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     
-                    downloadButton("downloadData_all_ratio", "Download All Staffing Ratio",
+                    downloadButton("downloadData_all_ratio", "Download Staffing Ratios",
                                    style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     
@@ -239,9 +241,9 @@ shinyUI(fluidPage(fluidRow(
                             tags$br(),
                             tags$br(),
                             tags$br(),
-                            
-                            "* Default patient-to-staff ratios are based on real staffing ratios at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
-"
+                            "* Default patient-to-staff ratios are based on real staffing ratios at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.",
+                            br(),
+                            br()
                         )
                     ),
                     
