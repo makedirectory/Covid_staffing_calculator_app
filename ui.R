@@ -144,7 +144,7 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_norm", "Download Table Above",
+                    downloadButton("downloadData_norm", "Download the Table Above",
                                    style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                     
                 ),
@@ -179,7 +179,7 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_crisis", "Download Table Above",
+                    downloadButton("downloadData_crisis", "Download the Table Above",
                                    style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                 ),
                 
