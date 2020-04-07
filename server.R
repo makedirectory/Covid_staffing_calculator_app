@@ -46,8 +46,9 @@ shinyServer(function(input, output, session) {
                         "Ratio (Crisis Mode)" = ratio_s,
                         Role = role
                     ) %>%
-                    mutate_if(is.numeric, as.integer)
-            )
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+            ) %>% 
+                hot_cols(colWidths = 100) 
         })
         
         output$x2 <- renderRHandsontable({
@@ -58,8 +59,9 @@ shinyServer(function(input, output, session) {
                         "Ratio (Crisis Mode)" = ratio_s,
                         Role = role
                     ) %>%
-                    mutate_if(is.numeric, as.integer)
-            )
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+            ) %>% 
+                hot_cols(colWidths = 100) 
         })
     })
     
@@ -73,8 +75,9 @@ shinyServer(function(input, output, session) {
                         "Ratio (Crisis Mode)" = ratio_s,
                         Role = role
                     ) %>%
-                    mutate_if(is.numeric, as.integer)
-            ) 
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+            ) %>% 
+                hot_cols(colWidths = 100) 
         })
         
         output$x2 <- renderRHandsontable({
@@ -85,8 +88,9 @@ shinyServer(function(input, output, session) {
                         "Ratio (Crisis Mode)" = ratio_s,
                         Role = role
                     ) %>%
-                    mutate_if(is.numeric, as.integer)
-            ) 
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+            ) %>% 
+                hot_cols(colWidths = 100) 
         })
     })
     
@@ -102,8 +106,10 @@ shinyServer(function(input, output, session) {
                     "Ratio (Crisis Mode)" = ratio_s,
                     Role = role
                 ) %>%
-                mutate_if(is.numeric, as.integer) 
-        ) 
+                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+        ) %>% 
+            hot_cols(colWidths = 100) 
+            
     })
     
     output$x2 <- renderRHandsontable({
@@ -114,8 +120,10 @@ shinyServer(function(input, output, session) {
                     "Ratio (Crisis Mode)" = ratio_s,
                     Role = role
                 ) %>%
-                mutate_if(is.numeric, as.integer)
-        ) 
+                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+        ) %>% 
+            hot_cols(colWidths = 100) 
+        
         })
     
 

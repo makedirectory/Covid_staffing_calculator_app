@@ -22,13 +22,14 @@ team_gen = readRDS("./data/team_ratio.rds") %>%
 
 # Define UI --------
 shinyUI(fluidPage(fluidRow(
+    
     # Sidebar layout with input and output definitions
     sidebarLayout(
         # Sidebar panel for inputs
         sidebarPanel(
             # step1 census -------------
             h4(
-                "Step 1 - Input your hospital’s patient censuses here (the default values are examples):"
+                "Step 1 - Input your hospital’s total census (default values are examples)"
             ),
             # num input style
             # tags$style("#n_covid_pt {font-size:20px;height:25px; color: gray;}"),
@@ -52,7 +53,7 @@ shinyUI(fluidPage(fluidRow(
             # ICU n pt
             numericInput(
                 "n_pt_icu",
-                "COVID+ ICU Inpatients",
+                "COVID+ ICU-level Inpatients",
                 60,
                 min = 0,
                 max = 1000,
@@ -66,7 +67,7 @@ shinyUI(fluidPage(fluidRow(
             
             # step2 edit rato------------
             h4(
-                "Step 2- Update your hospital’s patient:staff ratios and add, modify or delete staff roles to reflect your hospital’s specific staff organization."
+                "Step 2 - Update your hospital’s patient-to-staff ratios and add, modify, or delete staff roles to reflect your hospital’s specific staffing needs."
             ),
             br(),
             
@@ -74,13 +75,26 @@ shinyUI(fluidPage(fluidRow(
                          style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
             
             
+            hr(),
+            
+            # step3 calcuate -----
+            h4(
+                "Step 3 - Calculate Staffing Needs"
+            ),
+            br(),
+            
+            actionButton("calculate", "Calculate Results", icon("calculator"),
+                         style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
+            
+            
+            
             br(),
             br(),
             hr(),
             helpText(
                 paste0(
-                    "‘ICU-level bed’ includes any patient requiring an ICU bed or ICU-equivalent bed",
-                    " (i.e. non-ICU bed converted to ICU-level for COVID response)"
+                    "*ICU-level inpatient’ includes any patient requiring an ICU bed or ICU-equivalent bed",
+                    "(i.e. non-ICU bed converted to ICU-staffing level for COVID response)"
                 )
             )
             
@@ -88,9 +102,9 @@ shinyUI(fluidPage(fluidRow(
         
         # main tables display ------------
         mainPanel(fluidRow(
-            h3("View your total, ICU, and non-ICU staffing estimates in the table below: "),
             
-  
+            h3("Estimate Your Staffing Needs"),
+            
             tags$style(HTML("
         .tabbable > .nav > li[class=active]    > a[data-value='Normal (Tier 1)'] {background-color: #9dc183; color:black}
         .tabbable > .nav > li[class=active]    > a[data-value='Crisis (Tier 2)'] {background-color: #8D021F; color:white}
@@ -176,23 +190,19 @@ shinyUI(fluidPage(fluidRow(
                              "These estimates are designed to give a sense of general staffing needs, but your needs may vary based on local conditions."),
                     
             
-                    
-                    actionButton("calculate", "Calculate Results", icon("calculator"),
-                                 style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
-                    
-                    br(),
-                    br(),
-                    
                     actionButton("reset", "Clear Table", icon("table"),
                                  style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     actionButton("reset_to_ori", "Reset to Default", icon("undo"),
                                  style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
-                    
-                    br(),
-                    helpText(strong("Right click"), "in a cell to add and delete row.;", strong("Double click"), "in a cell to edit."),
 
-                    h5("ICU"),
+                    br(),
+                    br(),
+                    
+                    p(strong("Right click"), "in a cell to add and delete row;", "select cell and type the new value",
+                      style = "font-size:16px"),
+
+                    h4("ICU"),
                     
                     div(rHandsontableOutput("x1"), style = "font-size: 120%"),
                     
@@ -202,7 +212,7 @@ shinyUI(fluidPage(fluidRow(
                     #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
                     
                     
-                    h5("Non-ICU"),
+                    h4("Non-ICU"),
                     
                     div(rHandsontableOutput("x2"), style = "font-size: 120%"),
                     
@@ -225,9 +235,17 @@ shinyUI(fluidPage(fluidRow(
                             tags$br(),
                             "Ratio (normal) = the patient:staff ratio (i.e. how many patients each staff member cares for)",
                             tags$br(),
-                            "Ratio (Crisis Mode) = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)"
+                            "Ratio (Crisis Mode) = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
+                            tags$br(),
+                            tags$br(),
+                            tags$br(),
+                            
+                            "* Default patient-to-staff ratios are based on real staffing ratios at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
+"
                         )
-                    )
+                    ),
+                    
+                    
 
                 )
                 
