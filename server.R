@@ -10,16 +10,17 @@ shinyServer(function(input, output, session) {
     
     # read team ratio -----------
     team_ratio = readRDS("./data/team_ratio.rds") %>% 
-        mutate_if(is.numeric, as.integer)
+        mutate_if(is.numeric, as.integer) %>% 
+        rename(team_type = team_tpye)
     
     # ICU 
-    team_icu = readRDS("./data/team_ratio.rds") %>%
-        filter(team_tpye == "ICU") %>%
+    team_icu = team_ratio %>%
+        filter(team_type == "ICU") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
     
     # non-icu
-    team_gen = readRDS("./data/team_ratio.rds") %>%
-        filter(team_tpye == "General") %>%
+    team_gen = team_ratio %>%
+        filter(team_type == "General") %>%
         transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
     
 
@@ -154,7 +155,7 @@ shinyServer(function(input, output, session) {
         
         # if edit
         values$df = hot_to_r(input$x1) %>%
-            # rename back ---- 
+            # rename back 
         rename(
             ratio = "Ratio (Normal)",
             ratio_s = "Ratio (Crisis Mode)",
@@ -196,7 +197,7 @@ shinyServer(function(input, output, session) {
     })
     
     
-    
+    #normal mode
     norm_staff_table <- reactive({
         rbind(non_icu_staff(), icu_staff()) %>% 
             filter(!is.na(role)) %>%
