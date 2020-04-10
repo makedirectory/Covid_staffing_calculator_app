@@ -13,12 +13,22 @@ team_icu = readRDS("./data/team_ratio.rds") %>%
     filter(team_tpye == "ICU") %>%
     transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
 
+
+team_icu_shift = team_icu %>%
+  mutate(n_shift_per_person = c(3,3,4,5,5,4,4,7,7,7,7))  # from Kyla input
+
 # non-icu
 team_gen = readRDS("./data/team_ratio.rds") %>%
     filter(team_tpye == "General") %>%
     transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
 
+team_gen_shift = team_gen %>%
+  mutate(n_shift_per_person = c(3,3,4,5,5,4,4,7,7))  # from Kyla input
 
+team_shift = full_join(team_icu_shift, team_gen_shift, by = "role") %>% 
+  mutate(n_shift_per_person = ifelse(is.na(n_shift_per_person.x), n_shift_per_person.y, n_shift_per_person.x)) %>% 
+  select(role, n_shift_per_person) 
+  
 
 # Define UI --------
 shinyUI(fluidPage(fluidRow(
@@ -74,8 +84,16 @@ shinyUI(fluidPage(fluidRow(
             actionButton("update_gen", "Update Staffing", icon("user-md"),
                          style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
             
+            br(),
+            br(),
+            
+            actionButton("add_shift", "Add Staffing Shifts", icon("user-md"),
+                         style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
+            
             
             hr(),
+            
+            
             
             # step3 calcuate -----
             h4(
@@ -113,20 +131,31 @@ shinyUI(fluidPage(fluidRow(
             tabsetPanel(
                 id = "inTabset",
                 
+                tabPanel("test", tableOutput("test")),
+                
                 # normal mode ---------
                 tabPanel(
-                    "Normal (Tier 1)",
+                  value = "Normal (Tier 1)",
+                    "Normal",
                     br(),
                     "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     br(),
                     "Multiply as needed to account for shift changes.",
                     br(),
                     br(),
-                    
+                  
+                  # buttons 
+                  checkboxInput(inputId="normal_day", label = "Show Daily Staffing Needs", value = TRUE),
+                  checkboxInput(inputId="normal_week", label = "Show Weekly Satffing Needs", value = TRUE),
+                  
+                  
                     # table
                     div(tableOutput("table_normal"), style = "font-size:120%"),
                     
-                    
+                  conditionalPanel(condition = "input.normal_day", tableOutput("normal_day_table")),
+                  conditionalPanel(condition = "input.normal_week", tableOutput("normal_week_table")),
+                  
+                  
                     column(
                         8,
                         verbatimTextOutput("text"),
@@ -152,7 +181,8 @@ shinyUI(fluidPage(fluidRow(
                 # crisis mode ----
                 
                 tabPanel(
-                    "Crisis (Tier 2)",
+                    value = "Crisis (Tier 2)",
+                    "Crisis",
                     br(),
                     "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     br(),
