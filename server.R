@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
                         "Shift Length(hour)" = shift_length_hr,
                         "Number of Shifts/week" = shift_per_week
                     ) %>%
-                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
             ) %>% 
                 hot_cols(colWidths = 100) 
         })
@@ -70,7 +70,7 @@ shinyServer(function(input, output, session) {
                         "Shift Length(hour)" = shift_length_hr,
                         "Number of Shifts/week" = shift_per_week
                     ) %>%
-                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
             ) %>% 
                 hot_cols(colWidths = 100) 
         })
@@ -88,7 +88,7 @@ shinyServer(function(input, output, session) {
                     "Shift Length(hour)" = shift_length_hr,
                     "Number of Shifts/week" = shift_per_week
                   ) %>%
-                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
             ) %>% 
                 hot_cols(colWidths = 100) 
         })
@@ -103,7 +103,7 @@ shinyServer(function(input, output, session) {
                     "Shift Length(hour)" = shift_length_hr,
                     "Number of Shifts/week" = shift_per_week
                   ) %>%
-                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                    mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
             ) %>% 
                 hot_cols(colWidths = 100) 
         })
@@ -123,7 +123,7 @@ shinyServer(function(input, output, session) {
                 "Shift Length(hour)" = shift_length_hr,
                 "Number of Shifts/week" = shift_per_week
               ) %>%
-                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
         ) %>% 
             hot_cols(colWidths = 100) 
             
@@ -139,7 +139,7 @@ shinyServer(function(input, output, session) {
                 "Shift Length(hour)" = shift_length_hr,
                 "Number of Shifts/week" = shift_per_week
               ) %>%
-                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 570, stretchH = "all"
+                mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
         ) %>% 
             hot_cols(colWidths = 100) 
         
@@ -252,6 +252,7 @@ shinyServer(function(input, output, session) {
     norm_staff_week_table <- reactive({
       rbind(non_icu_staff(), icu_staff()) %>%
         display_by_mode(quo(n_staff_week)) %>%
+        mutate(`Count Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>% 
         rename(
           Role = role,
           "Non-ICU" = gen,
@@ -266,22 +267,44 @@ shinyServer(function(input, output, session) {
     
     
     #  crisis mode -----------
-    crisis_staff_table = reactive({
-        rbind(non_icu_staff(), icu_staff()) %>%
-            filter(!is.na(role)) %>%
-            select(team_type, role, n_staff_strech) %>%
-            pivot_wider(names_from = team_type,
-                        values_from = n_staff_strech) %>%
-            tidyext::row_sums(gen, icu, varname = "all", na_rm = TRUE) %>%
-            filter(all != 0) %>%
-            rename(
-                Role = role,
-                "Non-ICU" = gen,
-                "ICU" = icu,
-                "All Inpatient" = all
-            ) %>%
-            mutate_if(is.numeric, as.integer)
+    # no shift
+    crisis_staff_table <- reactive({
+      rbind(non_icu_staff(), icu_staff()) %>% 
+        display_by_mode(quo(n_staff_strech)) %>%
+        rename( 
+          Role = role,
+          "Non-ICU" = gen,
+          "ICU" = icu,
+          "All Inpatient" = all
+        ) 
     })
+    
+    # daily
+    crisis_staff_day_table <- reactive({
+      rbind(non_icu_staff(), icu_staff()) %>% 
+        display_by_mode(quo(n_staff_strech_day)) %>%
+        rename( 
+          Role = role,
+          "Non-ICU" = gen,
+          "ICU" = icu,
+          "All Inpatient" = all
+        ) 
+    })
+    
+    # weekly
+    crisis_staff_week_table <- reactive({
+      rbind(non_icu_staff(), icu_staff()) %>% 
+        display_by_mode(quo(n_staff_strech_week)) %>%
+        mutate(`Count Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>% 
+        rename( 
+          Role = role,
+          "Non-ICU" = gen,
+          "ICU" = icu,
+          "All Inpatient" = all
+        ) 
+    })
+    
+ 
    
 
     
@@ -291,28 +314,37 @@ shinyServer(function(input, output, session) {
     # normal
     output$table_normal <- renderTable(norm_staff_table())
     
-    output$normal_day_table <- renderTable(norm_staff_day_table(), caption = "Daily Staff Needs Based on Shift hours")
+    output$normal_day_table <- renderTable(norm_staff_day_table())
     
-    output$normal_week_table <- renderTable(norm_staff_week_table(), caption = "Weekly Staff Needs Based on Shifts")
+    output$normal_week_table <- renderTable(norm_staff_week_table())
 
+    # crisis
+    output$table_crisis <- renderTable(crisis_staff_table())
     
-    output$table_crisis <- renderTable(
-        crisis_staff_table()
-    ) 
+    output$crisis_day_table <- renderTable(crisis_staff_day_table())
+    
+    output$crisis_week_table <- renderTable(crisis_staff_week_table())
+    
     
 
     
     
     
    # dowload table -------
- 
+    
+    data_crisis <- reactive({
+      list(
+        any_time = crisis_staff_table(),
+        daily = crisis_staff_day_table(),
+        weekly = crisis_staff_week_table()
+      )
+    })
+    
     output$downloadData_crisis <- downloadHandler(
-      filename = function() {
-        paste('staffing_crisis', Sys.Date(), '.csv', sep='')
-      },
-      content = function(con) {
-        write.csv(crisis_staff_table(), con)
-      }
+      filename = function() {"staffing_crisis.xlsx"},
+      content = function(file) {
+        writexl::write_xlsx(data_crisis(), path = file)
+        }
     )
     
     
@@ -320,9 +352,25 @@ shinyServer(function(input, output, session) {
         filename = function() {
             paste('staffing_normal', Sys.Date(), '.csv', sep='')
         },
-        content = function(con) {
-            write.csv(norm_staff_table(), con)
+        content = function(con) { 
+          write.csv(norm_staff_table(), con)
         }
+    )
+    
+    
+    data_norm <- reactive({
+      list(
+        any_time = norm_staff_table(),
+        daily = norm_staff_day_table(),
+        weekly = norm_staff_week_table()
+      )
+    })
+    
+    output$downloadData_crisis <- downloadHandler(
+      filename = function() {"staffing_norm.xlsx"},
+      content = function(file) {
+        writexl::write_xlsx(data_norm(), path = file)
+      }
     )
     
     
