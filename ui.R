@@ -131,22 +131,30 @@ shinyUI(fluidPage(fluidRow(
                 tabPanel(
                   value = "Normal (Tier 1)",
                     "Normal",
-                    br(),
-                    "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                    br(),
-                    "Multiply as needed to account for shift changes.",
-                    br(),
-                    br(),
+                    # br(),
+                    # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+                    # br(),
+                    # "Multiply as needed to account for shift changes.",
+                    # br(),
+                    # br(),
                   
                   # buttons 
-                  checkboxInput(inputId="normal_any", label = "Show Staffing Needs at any given time", value = TRUE),
-                  checkboxInput(inputId="normal_day", label = "Show Daily Staffing Needs", value = TRUE),
-                  checkboxInput(inputId="normal_week", label = "Show Weekly Satffing Needs", value = TRUE),
+                  
+                  br(),
+                  
+                  p(strong("Select tables to show:")),
+                  # buttons 
+                  
+                  materialSwitch(inputId="normal_any", label = "Any Given Time", value = TRUE, status = "success"),
+                  materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
+                  materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
+                  
                   
                   
                     # table
                   hr(),
 
+                  # conditionalPanel(h4("Staff Needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
                   conditionalPanel(h4("Staff Needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
                   
                   hr(),
@@ -183,17 +191,20 @@ shinyUI(fluidPage(fluidRow(
                 tabPanel(
                     value = "Crisis (Tier 2)",
                     "Crisis",
-                    br(),
-                    "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                    br(),
-                    "Multiply as needed to account for shift changes.",
-                    br(),
-                    br(),
+                    # br(),
+                    # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+                    # br(),
+                    # "Multiply as needed to account for shift changes.",
                     
+                    br(),
+
+                    p(strong("Select tables to show:")),
                     # buttons 
-                    checkboxInput(inputId="crisis_any", label = "Show Staffing Needs at any given time", value = TRUE),
-                    checkboxInput(inputId="crisis_day", label = "Show Daily Staffing Needs", value = TRUE),
-                    checkboxInput(inputId="crisis_week", label = "Show Weekly Satffing Needs", value = TRUE),
+
+            
+                    materialSwitch(inputId="crisis_any", label = "Any Given Time", value = TRUE, status = "success"),
+                    materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
+                    materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
                     
                     hr(),
                     conditionalPanel(h4("Staff Needs at any given time"), condition = "input.crisis_any", div(tableOutput("table_crisis"), style = "font-size:120%")),
