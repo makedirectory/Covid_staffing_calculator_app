@@ -1,8 +1,9 @@
-
 library(rhandsontable)
 library(shiny)
 library(tidyverse)
 library(DT)
+library(shinyWidgets)
+
 
 # read team ratio -----------
 team_ratio = readRDS("./data/team_ratio.rds") %>%
@@ -145,9 +146,9 @@ shinyUI(fluidPage(fluidRow(
                   p(strong("Select tables to show:")),
                   # buttons 
                   
-                  materialSwitch(inputId="normal_any", label = "Any Given Time", value = TRUE, status = "success"),
-                  materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
-                  materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_any", label = "Any Given Time", value = TRUE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
                   
                   
                   
@@ -202,9 +203,9 @@ shinyUI(fluidPage(fluidRow(
                     # buttons 
 
             
-                    materialSwitch(inputId="crisis_any", label = "Any Given Time", value = TRUE, status = "success"),
-                    materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
-                    materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_any", label = "Any Given Time", value = TRUE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
                     
                     hr(),
                     conditionalPanel(h4("Staff Needs at any given time"), condition = "input.crisis_any", div(tableOutput("table_crisis"), style = "font-size:120%")),
