@@ -1,8 +1,9 @@
-
 library(rhandsontable)
 library(shiny)
 library(tidyverse)
 library(DT)
+library(shinyWidgets)
+
 
 # read team ratio -----------
 team_ratio = readRDS("./data/team_ratio.rds") %>%
@@ -13,12 +14,22 @@ team_icu = readRDS("./data/team_ratio.rds") %>%
     filter(team_tpye == "ICU") %>%
     transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
 
+
+team_icu_shift = team_icu %>%
+  mutate(n_shift_per_person = c(3,3,4,5,5,4,4,7,7,7,7))  # from Kyla input
+
 # non-icu
 team_gen = readRDS("./data/team_ratio.rds") %>%
     filter(team_tpye == "General") %>%
     transmute(role, ratio = n_bed_per_person, ratio_s = n_bed_per_person_stretch)
 
+team_gen_shift = team_gen %>%
+  mutate(n_shift_per_person = c(3,3,4,5,5,4,4,7,7))  # from Kyla input
 
+team_shift = full_join(team_icu_shift, team_gen_shift, by = "role") %>% 
+  mutate(n_shift_per_person = ifelse(is.na(n_shift_per_person.x), n_shift_per_person.y, n_shift_per_person.x)) %>% 
+  select(role, n_shift_per_person) 
+  
 
 # Define UI --------
 shinyUI(fluidPage(fluidRow(
@@ -67,7 +78,7 @@ shinyUI(fluidPage(fluidRow(
             
             # step2 edit rato------------
             h4(
-                "Step 2 - Update your hospital’s patient-to-staff ratios and add, modify, or delete staff roles to reflect your hospital’s specific staffing needs."
+              "Step 2 - Add, modify or delete staff roles; update your hospital’s patient-to-staff ratios; and change the shift lengths and number of shifts per week to reflect your hospital’s staffing needs and workflow"
             ),
             br(),
             
@@ -75,11 +86,15 @@ shinyUI(fluidPage(fluidRow(
                          style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
             
             
+        
+            
             hr(),
+            
+            
             
             # step3 calcuate -----
             h4(
-                "Step 3 - Calculate Staffing Needs"
+                "Step 3 - Calculate staffing needs"
             ),
             br(),
             
@@ -112,28 +127,50 @@ shinyUI(fluidPage(fluidRow(
             
             tabsetPanel(
                 id = "inTabset",
-                
+              
                 # normal mode ---------
                 tabPanel(
-                    "Normal (Tier 1)",
-                    br(),
-                    "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                    br(),
-                    "Multiply as needed to account for shift changes.",
-                    br(),
-                    br(),
-                    
+                  value = "Normal (Tier 1)",
+                    "Normal Mode",
+                    # br(),
+                    # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+                    # br(),
+                    # "Multiply as needed to account for shift changes.",
+                    # br(),
+                    # br(),
+                  
+                  # buttons 
+                  
+                  br(),
+                  
+                  p(strong("Select tables to show:")),
+                  # buttons 
+                  
+                  shinyWidgets::materialSwitch(inputId="normal_any", label = "Any Given Time", value = TRUE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = FALSE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = FALSE, status = "success"),
+                  
+                  
+                  
                     # table
-                    div(tableOutput("table_normal"), style = "font-size:120%"),
-                    
-                    
+                  hr(),
+
+                  conditionalPanel(h4("Staff needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
+                  
+                  hr(),
+                  conditionalPanel(h4("Daily Staff Needs (Accounting for shift hrs)"),condition = "input.normal_day", div(tableOutput("normal_day_table"), style = "font-size:120%")),
+                  
+                  hr(),
+                  conditionalPanel(h4("Weekly Staff Needs (Accounting for shift hrs and number of shifts)"),condition = "input.normal_week", div(tableOutput("normal_week_table"), style = "font-size:120%")),
+                  
+                  
                     column(
                         8,
                         verbatimTextOutput("text"),
                         br(),
                         p(
-                            "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic..
-                              Crisis mode ratios are based on currently available projections"
+                          "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
+                              Crisis mode ratios are based on currently available projections."
                         )
                         
                     ),
@@ -144,23 +181,40 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_norm", "Download the Table Above",
-                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
-                    
+                    # downloadButton("downloadData_norm", "Download the Tables Above",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
+                    # 
                 ),
                 
                 # crisis mode ----
                 
                 tabPanel(
-                    "Crisis (Tier 2)",
-                    br(),
-                    "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
-                    br(),
-                    "Multiply as needed to account for shift changes.",
-                    br(),
-                    br(),
+                    value = "Crisis (Tier 2)",
+                    "Crisis Mode",
+                    # br(),
+                    # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
+                    # br(),
+                    # "Multiply as needed to account for shift changes.",
                     
-                    div(tableOutput("table_crisis"), style = "font-size:120%"),
+                    br(),
+
+                    p(strong("Select tables to show:")),
+                    # buttons 
+
+            
+                    shinyWidgets::materialSwitch(inputId="crisis_any", label = "Any Given Time", value = TRUE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = FALSE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = FALSE, status = "success"),
+                    
+                    hr(),
+                    conditionalPanel(h4("Staff Needs at any given time"), condition = "input.crisis_any", div(tableOutput("table_crisis"), style = "font-size:120%")),
+            
+                    hr(),
+                    conditionalPanel(h4("Daily Staff Needs (Accounting for shift hrs)"), condition = "input.crisis_day", div(tableOutput("crisis_day_table"), style = "font-size:120%")),
+                    hr(),
+                    conditionalPanel(h4("Weekly Staff Needs (Accounting for shift hrs and number of shifts)"), condition = "input.crisis_week", div(tableOutput("crisis_week_table"), style = "font-size:120%")),
+                    
+                    
 
                     column(
                         8,
@@ -179,8 +233,8 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_crisis", "Download the Table Above",
-                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
+                    # downloadButton("downloadData_crisis", "Download the Tables Above",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                 ),
                 
                 # editable ratio --------
@@ -191,6 +245,9 @@ shinyUI(fluidPage(fluidRow(
                     helpText(strong("Important note:"), 
                              "These estimates are designed to give a sense of general staffing needs, but your needs may vary based on local conditions."),
                     
+                    # shinyWidgets::setSliderColor("#404040", 1),
+                    # sliderInput("reduction",label="Expected Staff Reduction (eg. sick)", min = 0, max = 100, post  = " %", value = 30),
+                    # 
             
                     actionButton("reset", "Clear Table", icon("table"),
                                  style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
