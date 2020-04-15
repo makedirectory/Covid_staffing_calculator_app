@@ -78,7 +78,7 @@ shinyUI(fluidPage(fluidRow(
             
             # step2 edit rato------------
             h4(
-                "Step 2 - Update your hospital’s patient-to-staff ratios and add, modify, or delete staff roles to reflect your hospital’s specific staffing needs."
+              "Step 2 - Add, modify or delete staff roles; update your hospital’s patient-to-staff ratios; and change the shift lengths and number of shifts per week to reflect your hospital’s staffing needs and workflow"
             ),
             br(),
             
@@ -94,7 +94,7 @@ shinyUI(fluidPage(fluidRow(
             
             # step3 calcuate -----
             h4(
-                "Step 3 - Calculate Staffing Needs"
+                "Step 3 - Calculate staffing needs"
             ),
             br(),
             
@@ -147,15 +147,15 @@ shinyUI(fluidPage(fluidRow(
                   # buttons 
                   
                   shinyWidgets::materialSwitch(inputId="normal_any", label = "Any Given Time", value = TRUE, status = "success"),
-                  shinyWidgets::materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
-                  shinyWidgets::materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_day", label = "Daily Staffing Needs", value = FALSE, status = "success"),
+                  shinyWidgets::materialSwitch(inputId="normal_week", label = "Weekly Staffing Needs", value = FALSE, status = "success"),
                   
                   
                   
                     # table
                   hr(),
 
-                  conditionalPanel(h4("Staff Needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
+                  conditionalPanel(h4("Staff needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
                   
                   hr(),
                   conditionalPanel(h4("Daily Staff Needs (Accounting for shift hrs)"),condition = "input.normal_day", div(tableOutput("normal_day_table"), style = "font-size:120%")),
@@ -203,8 +203,8 @@ shinyUI(fluidPage(fluidRow(
 
             
                     shinyWidgets::materialSwitch(inputId="crisis_any", label = "Any Given Time", value = TRUE, status = "success"),
-                    shinyWidgets::materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = TRUE, status = "success"),
-                    shinyWidgets::materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = TRUE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_day", label = "Daily Staffing Needs", value = FALSE, status = "success"),
+                    shinyWidgets::materialSwitch(inputId="crisis_week", label = "Weekly Staffing Needs", value = FALSE, status = "success"),
                     
                     hr(),
                     conditionalPanel(h4("Staff Needs at any given time"), condition = "input.crisis_any", div(tableOutput("table_crisis"), style = "font-size:120%")),

@@ -54,7 +54,7 @@ shinyServer(function(input, output, session) {
                         "Ratio (Normal)" = ratio,
                         "Ratio (Crisis)" = ratio_s,
                         Role = role,
-                        "Shift Length(hour)" = shift_length_hr,
+                        "Shift Length(hours)" = shift_length_hr,
                         "Number of Shifts/week" = shift_per_week
                     ) %>%
                     mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -69,7 +69,7 @@ shinyServer(function(input, output, session) {
                         "Ratio (Normal)" = ratio,
                         "Ratio (Crisis)" = ratio_s,
                         Role = role,
-                        "Shift Length(hour)" = shift_length_hr,
+                        "Shift Length(hours)" = shift_length_hr,
                         "Number of Shifts/week" = shift_per_week
                     ) %>%
                     mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -87,7 +87,7 @@ shinyServer(function(input, output, session) {
                     "Ratio (Normal)" = ratio,
                     "Ratio (Crisis)" = ratio_s,
                     Role = role,
-                    "Shift Length(hour)" = shift_length_hr,
+                    "Shift Length(hours)" = shift_length_hr,
                     "Number of Shifts/week" = shift_per_week
                   ) %>%
                     mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -102,7 +102,7 @@ shinyServer(function(input, output, session) {
                     "Ratio (Normal)" = ratio,
                     "Ratio (Crisis)" = ratio_s,
                     Role = role,
-                    "Shift Length(hour)" = shift_length_hr,
+                    "Shift Length(hours)" = shift_length_hr,
                     "Number of Shifts/week" = shift_per_week
                   ) %>%
                     mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -122,7 +122,7 @@ shinyServer(function(input, output, session) {
                 "Ratio (Normal)" = ratio,
                 "Ratio (Crisis)" = ratio_s,
                 Role = role,
-                "Shift Length(hour)" = shift_length_hr,
+                "Shift Length(hours)" = shift_length_hr,
                 "Number of Shifts/week" = shift_per_week
               ) %>%
                 mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -138,7 +138,7 @@ shinyServer(function(input, output, session) {
                 "Ratio (Normal)" = ratio,
                 "Ratio (Crisis)" = ratio_s,
                 Role = role,
-                "Shift Length(hour)" = shift_length_hr,
+                "Shift Length(hours)" = shift_length_hr,
                 "Number of Shifts/week" = shift_per_week
               ) %>%
                 mutate_if(is.numeric, as.integer), rowHeaders = FALSE, width = 650, stretchH = "all"
@@ -177,7 +177,7 @@ shinyServer(function(input, output, session) {
             ratio = "Ratio (Normal)",
             ratio_s = "Ratio (Crisis)",
             role = Role,
-            shift_length_hr = "Shift Length(hour)",
+            shift_length_hr = "Shift Length(hours)",
             shift_per_week = "Number of Shifts/week"
         ) %>%
             filter(!is.na(role)) %>%
@@ -203,7 +203,7 @@ shinyServer(function(input, output, session) {
             ratio = "Ratio (Normal)",
             ratio_s = "Ratio (Crisis)",
             role = Role,
-            shift_length_hr = "Shift Length(hour)",
+            shift_length_hr = "Shift Length(hours)",
             shift_per_week = "Number of Shifts/week"
         ) %>%
             filter(!is.na(role)) %>% 
