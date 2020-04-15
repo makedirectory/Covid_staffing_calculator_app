@@ -131,7 +131,7 @@ shinyUI(fluidPage(fluidRow(
                 # normal mode ---------
                 tabPanel(
                   value = "Normal (Tier 1)",
-                    "Normal",
+                    "Normal Mode",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -155,14 +155,13 @@ shinyUI(fluidPage(fluidRow(
                     # table
                   hr(),
 
-                  # conditionalPanel(h4("Staff Needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
                   conditionalPanel(h4("Staff Needs at any given time"),condition = "input.normal_any", div(tableOutput("table_normal"), style = "font-size:120%")),
                   
                   hr(),
-                  conditionalPanel(h4("Daily Staff Needs (counting shift hrs)"),condition = "input.normal_day", div(tableOutput("normal_day_table"), style = "font-size:120%")),
+                  conditionalPanel(h4("Daily Staff Needs (Accounting for shift hrs)"),condition = "input.normal_day", div(tableOutput("normal_day_table"), style = "font-size:120%")),
                   
                   hr(),
-                  conditionalPanel(h4("Weekly Staff Needs (counting shift hrs and changes)"),condition = "input.normal_week", div(tableOutput("normal_week_table"), style = "font-size:120%")),
+                  conditionalPanel(h4("Weekly Staff Needs (Accounting for shift hrs and number of shifts)"),condition = "input.normal_week", div(tableOutput("normal_week_table"), style = "font-size:120%")),
                   
                   
                     column(
@@ -182,16 +181,16 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_norm", "Download the Tables Above",
-                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
-                    
+                    # downloadButton("downloadData_norm", "Download the Tables Above",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
+                    # 
                 ),
                 
                 # crisis mode ----
                 
                 tabPanel(
                     value = "Crisis (Tier 2)",
-                    "Crisis",
+                    "Crisis Mode",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -211,9 +210,9 @@ shinyUI(fluidPage(fluidRow(
                     conditionalPanel(h4("Staff Needs at any given time"), condition = "input.crisis_any", div(tableOutput("table_crisis"), style = "font-size:120%")),
             
                     hr(),
-                    conditionalPanel(h4("Daily Staff Needs (counting shift hrs)"), condition = "input.crisis_day", div(tableOutput("crisis_day_table"), style = "font-size:120%")),
+                    conditionalPanel(h4("Daily Staff Needs (Accounting for shift hrs)"), condition = "input.crisis_day", div(tableOutput("crisis_day_table"), style = "font-size:120%")),
                     hr(),
-                    conditionalPanel(h4("Weekly Staff Needs (counting shift hrs and changes)"), condition = "input.crisis_week", div(tableOutput("crisis_week_table"), style = "font-size:120%")),
+                    conditionalPanel(h4("Weekly Staff Needs (Accounting for shift hrs and number of shifts)"), condition = "input.crisis_week", div(tableOutput("crisis_week_table"), style = "font-size:120%")),
                     
                     
 
@@ -234,8 +233,8 @@ shinyUI(fluidPage(fluidRow(
                     br(),
                     br(),
                     br(),
-                    downloadButton("downloadData_crisis", "Download the Tables Above",
-                                   style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
+                    # downloadButton("downloadData_crisis", "Download the Tables Above",
+                    #                style = "color: #fff; background-color: #228B22; border-color: #2e6da4")
                 ),
                 
                 # editable ratio --------
@@ -246,9 +245,9 @@ shinyUI(fluidPage(fluidRow(
                     helpText(strong("Important note:"), 
                              "These estimates are designed to give a sense of general staffing needs, but your needs may vary based on local conditions."),
                     
-                    shinyWidgets::setSliderColor("#404040", 1),
-                    sliderInput("reduction",label="Expected Staff Reduction (eg. sick)", min = 0, max = 100, post  = " %", value = 30),
-                    
+                    # shinyWidgets::setSliderColor("#404040", 1),
+                    # sliderInput("reduction",label="Expected Staff Reduction (eg. sick)", min = 0, max = 100, post  = " %", value = 30),
+                    # 
             
                     actionButton("reset", "Clear Table", icon("table"),
                                  style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),

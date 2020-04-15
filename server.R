@@ -254,7 +254,7 @@ shinyServer(function(input, output, session) {
     norm_staff_week_table <- reactive({
       rbind(non_icu_staff(), icu_staff()) %>%
         display_by_mode(quo(n_staff_week)) %>%
-        mutate(`Accounting for Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>% 
+        # mutate(`Accounting for Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>% 
         rename(
           Role = role,
           "Non-ICU" = gen,
@@ -297,7 +297,7 @@ shinyServer(function(input, output, session) {
     crisis_staff_week_table <- reactive({
       rbind(non_icu_staff(), icu_staff()) %>% 
         display_by_mode(quo(n_staff_strech_week)) %>%
-        mutate(`Accounting for Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>% 
+        # mutate(`Accounting for Staff Reduction` = as.integer(all* (1+input$reduction/100))) %>%
         rename( 
           Role = role,
           "Non-ICU" = gen,
