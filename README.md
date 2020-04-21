@@ -1,3 +1,5 @@
+[![COVID Staffing Project](https://www.covidstaffing.org/wp-content/uploads/2020/04/logo-covid-staffing-project-@2x.png)](https://www.covidstaffing.org)
+
 # Staff Demand Calculator
 
 The COVID staffing demand calculator can be use to determine your hospital’s immediate staffing needs, based on your current inpatient census. Please visit [covidstaffing.org](https://www.covidstaffing.org/) for more information on our staffing tools.
