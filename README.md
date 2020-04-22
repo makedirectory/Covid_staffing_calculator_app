@@ -7,14 +7,14 @@ The COVID staffing demand calculator can be use to determine your hospital’s i
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-- [Prerequisites](#Prerequisites)
-- [Development Environment](#Development Environment)
-- [Running](#Running)
-    - [Using RStudio](#Using RStudio)
-    - [Using shinyServer](#Using shinyServer)
-- [File Structure](#File Structure)
-- [Further Information](#Further Information)
-- [License](#License)
+- [Prerequisites](#prerequisites)
+- [Development Environment](#development-environment)
+- [Running](#running)
+    - [Using RStudio](#using-rstudio)
+    - [Using shinyServer](#using-shinyserver)
+- [File Structure](#file-structure)
+- [Further Information](#further-information)
+- [License](#license)
 
 ## Getting Started
 
