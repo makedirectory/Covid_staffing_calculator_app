@@ -4,6 +4,18 @@
 
 The COVID staffing demand calculator can be use to determine your hospital’s immediate staffing needs, based on your current inpatient census. Please visit [covidstaffing.org](https://www.covidstaffing.org/) for more information on our staffing tools.
 
+## Table of Contents
+
+- [Getting Started](#Getting Started)
+- [Prerequisites](#Prerequisites)
+- [Development Environment](#Development Environment)
+- [Running](#Running)
+    - [Using RStudio](#Using RStudio)
+    - [Using shinyServer](#Using shinyServer)
+- [File Structure](#File Structure)
+- [Further Information](#Further Information)
+- [License](#License)
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for **development** and **testing** purposes. See **contributing** for more information on how you can help us build the COVID staffing demand calculator. See **deployment** for notes on how to deploy the project on a live system.
@@ -12,13 +24,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 This application is written in [R](https://www.r-project.org/) and uses [Shiny](https://github.com/rstudio/shiny) to build and deploy the web application.  We assume you have basic knowledge of both.
 
-### Settings up the development environment
+### Development Environment
 
 This should detail how to setup a local environment that enables developers to keep all packages version segregated from their local machine. This will make it easy to setup and avoid conflicts due to dependency version miss-matches between development environments.   
 
 ### Running
 
 The following packages should be added to an install script, along with their intended version, and references from there.
+
+Example
+```
+install.packages(c("package1", "package2"))
+```
 
 Imports
 - shiny
@@ -31,6 +48,8 @@ Imports
 
 Depends
 - DT
+- gsheet
+- openxlsx
 - forcats
 - stringr
 - dplyr
@@ -56,10 +75,28 @@ install.package("devtools")
 devtools::install_github('m-clark/tidyext')
 ```
 
-#### Using a Shiny server
+#### Using shinyServer
 Instructions on how to run the application on a shiny server.
 
-### Further information
+### File Structure
+
+ShinyApp searches for the following in the root folder:
+- server.R
+    - Contains shinyServer function
+- ui.R
+    - Contains shinyUI function
+- Covid_staffing_calculator.Rproj
+    - What is this for?
+- Staff_projections.R
+    - What is this for?
+- formula_for_cal.R
+    - What is this for?
+- functions/
+    - What is the main idea for this folder?
+- data/
+    - What is the main idea for this folder?
+
+### Further Information
 
 The COVID-19 pandemic poses an unprecedented challenge to health care systems and their staff
 In response, our [multi-institutional collaborative](https://www.covidstaffing.org/) is developing tools to support your hospital in:
