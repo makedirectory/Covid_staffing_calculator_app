@@ -6,7 +6,7 @@ The COVID staffing demand calculator can be use to determine your hospital’s i
 
 ## Table of Contents
 
-- [Getting Started](#Getting Started)
+- [Getting Started](#getting-started)
 - [Prerequisites](#Prerequisites)
 - [Development Environment](#Development Environment)
 - [Running](#Running)
@@ -24,7 +24,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 This application is written in [R](https://www.r-project.org/) and uses [Shiny](https://github.com/rstudio/shiny) to build and deploy the web application.  We assume you have basic knowledge of both.
 
-### Development Environment
+## Development Environment
 
 This should detail how to setup a local environment that enables developers to keep all packages version segregated from their local machine. This will make it easy to setup and avoid conflicts due to dependency version miss-matches between development environments.   
 
@@ -78,7 +78,7 @@ devtools::install_github('m-clark/tidyext')
 #### Using shinyServer
 Instructions on how to run the application on a shiny server.
 
-### File Structure
+## File Structure
 
 ShinyApp searches for the following in the root folder:
 - server.R
@@ -96,7 +96,7 @@ ShinyApp searches for the following in the root folder:
 - data/
     - What is the main idea for this folder?
 
-### Further Information
+## Further Information
 
 The COVID-19 pandemic poses an unprecedented challenge to health care systems and their staff
 In response, our [multi-institutional collaborative](https://www.covidstaffing.org/) is developing tools to support your hospital in:
@@ -111,6 +111,6 @@ Our goal is not to duplicate work that others have already begun, but rather to 
 
 If you are also working in this domain and interested in collaborating, please [contact us](mailto:info@covidstaffing.org).
 
-### License
+## License
 
 This project is licensed under the MIT license.
