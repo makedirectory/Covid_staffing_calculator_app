@@ -38,4 +38,7 @@ vignettes/*.pdf
 
 *.dcf
 
-.DS_Store
+# PackRat
+packrat/lib*/
+packrat/src*
+packrat/bundles*
