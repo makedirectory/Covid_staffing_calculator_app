@@ -102,7 +102,6 @@ shinyUI(fluidPage(fluidRow(
                          style = "color: #fff; background-color: #228B22; border-color: #2e6da4"),
             
             
-            
             br(),
             br(),
             hr(),
@@ -131,7 +130,7 @@ shinyUI(fluidPage(fluidRow(
                 # normal mode ---------
                 tabPanel(
                   value = "Normal (Tier 1)",
-                    "Normal Mode",
+                    "Normal",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -170,7 +169,7 @@ shinyUI(fluidPage(fluidRow(
                         br(),
                         p(
                           "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
-                              Crisis mode ratios are based on currently available projections."
+                              Stretch ratios are based on currently available projections."
                         )
                         
                     ),
@@ -190,7 +189,7 @@ shinyUI(fluidPage(fluidRow(
                 
                 tabPanel(
                     value = "Crisis (Tier 2)",
-                    "Crisis Mode",
+                    "Stretch",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -294,7 +293,7 @@ shinyUI(fluidPage(fluidRow(
                             tags$br(),
                             "Ratio (normal) = the patient:staff ratio (i.e. how many patients each staff member cares for)",
                             tags$br(),
-                            "Ratio (Crisis Mode) = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
+                            "Ratio (stretch) = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
                             tags$br(),
                             tags$br(),
                             tags$br(),
