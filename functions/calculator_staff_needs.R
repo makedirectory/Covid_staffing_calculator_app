@@ -1,5 +1,5 @@
 calculator_staff_needs <- function(team_type, team_ratios, n_pt) {
-  team_ratios %>% 
+  team_ratios %>%
     transmute(team_type = team_type,
               role,
               n_staff = ceiling(n_pt/as.numeric(ratio)),

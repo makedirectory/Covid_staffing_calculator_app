@@ -8,4 +8,3 @@ display_by_mode <- function(data, staff_needs) {
     filter(all != 0) %>%
     mutate_if(is.numeric, as.integer)
 }
-
