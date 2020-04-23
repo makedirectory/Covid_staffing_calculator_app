@@ -3,10 +3,10 @@ library(tidyverse)
 # Read in CHIME estimate
 chime <- read_csv("data/2020-04-02_projected_census.csv")
 
-# Read 
+# Read
 team <- read_rds("data/team_ratio.rds") # pull from modifiable data
 
-# Clean up CHIME 
+# Clean up CHIME
 chime <- chime %>%
   filter(day >= 0)
 
@@ -15,8 +15,8 @@ chime_row <- nrow(chime)
 
 # Create four plots: ICU / General; Normal / Stretch
 
-icu_ratio <- team %>% 
-  filter(team_tpye == "ICU") 
+icu_ratio <- team %>%
+  filter(team_tpye == "ICU")
 
 icu_norm <- icu_ratio %>%
   select(role, n_bed_per_person) %>%
@@ -34,8 +34,8 @@ icu_stretch <- icu_ratio %>%
   add_row(day = 1:chime_row) %>%
   fill(., 2:12)
 
-gen_ratio <- team %>% 
-  filter(team_tpye == "General") 
+gen_ratio <- team %>%
+  filter(team_tpye == "General")
 
 gen_norm <- gen_ratio %>%
   select(role, n_bed_per_person) %>%
@@ -51,7 +51,7 @@ gen_stretch <- gen_ratio %>%
          team_type = "General Stretch") %>%
   pivot_wider(., id_cols = c("day", "team_type"), names_from = role, values_from = n_bed_per_person_stretch) %>%
   add_row(day = 1:chime_row) %>%
-  fill(., 2:10) 
+  fill(., 2:10)
 
 # Append tables
 
@@ -78,8 +78,3 @@ chime_lookup %>%
        caption = "Estimates from CHIME and user-inputted ratios") +
   theme_bw() +
   facet_wrap(~ team_type, scales = "free")
-
-
-
-
-
