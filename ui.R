@@ -102,7 +102,6 @@ shinyUI(
                 "Step 3 - Calculate staffing needs",
                 class = "center-text margin-bottom10"
             ),
-            br(),
 
             actionButton(
               "calculate",
@@ -111,6 +110,8 @@ shinyUI(
               icon("calculator"),
               class = "main-button margin-top10 margin-bottom20"
             ),
+
+            hr(),
 
             helpText(
                 p(
@@ -136,7 +137,7 @@ shinyUI(
                 # normal mode ---------
                 tabPanel(
                   value = "Normal (Tier 1)",
-                    "Normal Mode",
+                    "Normal",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -165,7 +166,7 @@ shinyUI(
 
                   p(  class = "margin-top10 text-margin",
                     "* Staffing estimates are based on actual staff-to-patient ratios used in ICU and non-ICU settings at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.
-                        Crisis mode ratios are based on currently available projections."
+                        Stretch ratios are based on currently available projections."
                   ),
 
                     # downloadButton("downloadData_norm", "Download the Tables Above",
@@ -177,7 +178,7 @@ shinyUI(
 
                 tabPanel(
                     value = "Crisis (Tier 2)",
-                    "Crisis Mode",
+                    "Stretch",
                     # br(),
                     # "Disclaimer: Staffing projections refer to institutional staff needs at any given point in time.",
                     # br(),
@@ -223,14 +224,14 @@ shinyUI(
                       icon("table"),
                       class = "main-button margin-bottom20 margin-top10"
                     ),
-                    
+
                     actionButton(
                       "reset_to_ori",
                       "Reset to Default",
                       icon("undo"),
                       class = "main-button margin-bottom20 margin-top10"
                     ),
-                    
+
                     p(strong("Right click"), "in a cell to add and delete row;", "select cell and type the new value",
                       style = "font-size:16px"),
 
@@ -257,15 +258,16 @@ shinyUI(
                     ),
 
                     p( class = "margin-top20 text-margin",
-                        strong("Role:"), " List of possible staff roles",
+                        strong("Role: "), "List of possible staff roles",
                         br(),
-                        strong("Ratio (Normal)"), " = the patient:staff ratio (i.e. how many patients each staff member cares for)",
+                        strong("Ratio (Normal): "), "The patient:staff ratio (i.e. how many patients each staff member cares for)",
                         br(),
-                        strong("Ratio (Crisis Mode)"), " = the patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
+                        strong("Ratio (stretch): "), "The patient:staff ratio during a ‘crisis mode’ (ie. the maximum number patients each staff member can care for)",
                         br(),
                         br(),
                         br(),
-                        "* Default patient-to-staff ratios are based on real staffing ratios at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic.",
+                        strong("*"),
+                        em("Default patient-to-staff ratios are based on real staffing ratios at a collaborating academic medical center that has undertaken extensive emergency preparedness work for this pandemic."),
                         br(),
                         br()
                     ),
