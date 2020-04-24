@@ -36,6 +36,18 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 
+# rstudio project
+*.Rproj
+
 *.dcf
 
 .DS_Store
+packrat/lib*/
+
+old/*/
+
+# PackRat
+packrat/lib*/
+packrat/src*
+packrat/bundles*
+
