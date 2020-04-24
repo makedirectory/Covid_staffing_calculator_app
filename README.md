@@ -1,4 +1,4 @@
-[![COVID Staffing Project](https://www.covidstaffing.org/wp-content/uploads/2020/04/logo-covid-staffing-project-@2x-300x30.png](https://www.covidstaffing.org)
+[![COVID Staffing Project](https://www.covidstaffing.org/wp-content/uploads/2020/04/logo-covid-staffing-project-@2x-300x30.png)]
 
 # Staff Demand Calculator
 
