@@ -10,6 +10,7 @@ The COVID staffing demand calculator can be use to determine your hospital’s i
 - [Prerequisites](#prerequisites)
 - [Development Environment](#development-environment)
 - [Running](#running)
+    - [Using Packrat](#using-packrat)
     - [Using RStudio](#using-rstudio)
     - [Using shinyServer](#using-shinyserver)
 - [File Structure](#file-structure)
@@ -30,41 +31,17 @@ This should detail how to setup a local environment that enables developers to k
 
 ### Running
 
-The following packages should be added to an install script, along with their intended version, and references from there.
+#### Using Packrat
 
-Example
+To restore the current project you can run the following from within the R console:
+
 ```
-install.packages(c("package1", "package2"))
+install.packages("devtools")
+devtools::install_github("rstudio/packrat")
+packrat::restore()
 ```
 
-Imports
-- shiny
-- tidyverse
-- highcharter
-- rhandsontable
-- shinyjs
-- plotly
-- shinyWidgets
-
-Depends
-- DT
-- gsheet
-- openxlsx
-- forcats
-- stringr
-- dplyr
-- purrr
-- readr
-- tidyr
-- tibble
-- ggplot2
-- stats
-- graphics
-- grDevices
-- utils
-- datasets
-- methods
-- base
+If you need to add packages to this project, always run `packrat::snapshot()` before committing. This will add any new dependencies to the packrat.lock file.
 
 #### Using RStudio
 To run the application locally, you can install the packages above in RStudio, and use the function `runApp()` to start.
@@ -78,6 +55,16 @@ devtools::install_github('m-clark/tidyext')
 #### Using shinyServer
 Instructions on how to run the application on a shiny server.
 
+## Styling
+
+This project includes the [styler package](https://github.com/r-lib/styler) to maintain consistent styles throughout the codebase. Before making any PRs please be sure to run the styler on your newly written code.
+
+Run the following in the R console:
+
+`source("tools/styler.R")`
+
+If you add new files or directories please include them in the above script.
+
 ## File Structure
 
 ShinyApp searches for the following in the root folder:
@@ -85,13 +72,9 @@ ShinyApp searches for the following in the root folder:
     - Contains shinyServer function for server side functions
     - Renders once per user
 - ui.R
-    - Contains shinyUI function for front end rendering 
+    - Contains shinyUI function for front end rendering
     - Renders once per R session
 - Covid_staffing_calculator.Rproj
-    - What is this for?
-- Staff_projections.R
-    - What is this for?
-- formula_for_cal.R
     - What is this for?
 - functions/
     - What is the main idea for this folder?
