@@ -1,6 +1,7 @@
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/ui.R")
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/staff_projections.R")
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/server.R")
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/formula_for_cal.R")
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/functions/display_by_mode.R")
-lintr::lint("~/Documents/Applications/staffing_demand_calculator/functions/calculator_staff_needs.R")
+#!/usr/bin/env Rscript
+wd <- getwd()
+
+lintr::lint(file.path(wd, "ui.R"))
+lintr::lint(file.path(wd, "server.R"))
+lintr::lint(file.path(wd, "functions", "display_by_mode.R"))
+lintr::lint(file.path(wd, "functions", "calculator_staff_needs.R"))
