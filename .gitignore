@@ -18,7 +18,7 @@
 /*.Rcheck/
 
 # RStudio files
-.Rproj.user/
+.Rproj.user*
 
 # produced vignettes
 vignettes/*.html
@@ -34,14 +34,20 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-.Rproj.user
+
 
 *.dcf
+
+#Mac OSx
+.DS_Store
+
+# Old files
+/old*
 
 # PackRat
 packrat/lib*/
 packrat/src*
 packrat/bundles*
-
-#Mac OSx
-.DS_Store
+packrat/packrat.opts
+packrat/init.R
+.Rprofile
