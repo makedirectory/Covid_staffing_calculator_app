@@ -36,8 +36,6 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 
-# rstudio project
-*.Rproj
 
 *.dcf
 
