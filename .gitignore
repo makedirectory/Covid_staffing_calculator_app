@@ -48,5 +48,3 @@ vignettes/*.pdf
 packrat/lib*/
 packrat/src*
 packrat/bundles*
-packrat/init.R
-.Rprofile
