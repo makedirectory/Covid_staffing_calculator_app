@@ -44,7 +44,7 @@ vignettes/*.pdf
 .DS_Store
 packrat/lib*/
 
-old/*/
+/old/
 
 # PackRat
 packrat/lib*/
