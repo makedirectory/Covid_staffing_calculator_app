@@ -82,9 +82,11 @@ Instructions on how to run the application on a shiny server.
 
 ShinyApp searches for the following in the root folder:
 - server.R
-    - Contains shinyServer function
+    - Contains shinyServer function for server side functions
+    - Renders once per user
 - ui.R
-    - Contains shinyUI function
+    - Contains shinyUI function for front end rendering 
+    - Renders once per R session
 - Covid_staffing_calculator.Rproj
     - What is this for?
 - Staff_projections.R
