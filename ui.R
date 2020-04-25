@@ -36,8 +36,6 @@ shinyUI(
   fluidPage(
     includeCSS("styles.css"),
     titlePanel("Estimate Your Staffing Needs"),
-    fluidRow(
-
       # Sidebar layout with input and output definitions
       sidebarLayout(
         # Sidebar panel for inputs
@@ -123,7 +121,7 @@ shinyUI(
         ),
 
         # main tables display ------------
-        mainPanel(fluidRow(
+        mainPanel(
           tags$style(HTML("
               .tabbable > .nav > li[class=active]    > a[data-value='Normal (Tier 1)'] {background-color: #9dc183; color:black}
               .tabbable > .nav > li[class=active]    > a[data-value='Crisis (Tier 2)'] {background-color: #8D021F; color:white}
@@ -278,7 +276,5 @@ shinyUI(
             )
           ),
         ), )
-      )
     )
-  )
 )
