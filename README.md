@@ -6,6 +6,7 @@ The COVID staffing demand calculator can be use to determine your hospital’s i
 
 ## Table of Contents
 
+- [RoadMap](#roadmap)
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Development Environment](#development-environment)
@@ -17,6 +18,10 @@ The COVID staffing demand calculator can be use to determine your hospital’s i
 - [File Structure](#file-structure)
 - [Further Information](#further-information)
 - [License](#license)
+
+## RoadMap
+- [ ] Update Advance Input section to limit range of ICU bed allocation removing the possibility of negative projection values.
+- [ ] Add Weekly view breakdown to the Total Staffing Needs projection table allowing the end-user to see the projected needs for each week on the chart.
 
 ## Getting Started
 
@@ -32,7 +37,7 @@ This should detail how to setup a local environment that enables developers to k
 
 ### Setup
 
-#### Using Packrat
+#### Using Packrat (outside of R Studio)
 
 To restore the current project you can run the following from within the R console:
 
@@ -45,6 +50,7 @@ packrat::restore()
 If you need to add packages to this project, always run `packrat::snapshot()` before committing. This will add any new dependencies to the packrat.lock file.
 
 #### Using RStudio
+
 To run the application locally, you can install the packages above in RStudio, and use the function `runApp()` to start.
 
 Note: You may need to install **devtools** and **tidyext** from the console manually:
@@ -53,9 +59,6 @@ install.package("devtools")
 devtools::install_github('m-clark/tidyext')
 ```
 
-#### Using shinyServer
-Instructions on how to run the application on a shiny server.
-
 ## Styling
 
 This project includes the [styler package](https://github.com/r-lib/styler) to maintain consistent styles throughout the codebase. Before making any PRs please be sure to run the styler on your newly written code.
@@ -63,6 +66,10 @@ This project includes the [styler package](https://github.com/r-lib/styler) to m
 Run the following in the R console:
 
 `source("tools/styler.R")`
+
+Or Run in Bash, sh, zsh, etc
+
+`Rscript tools/styler.R`
 
 If you add new files or directories please include them in `tools/styler.R` and `tools/lintr.R` script. By default the styler script includes everything under `/functions`. The syntax used is:
 
@@ -78,17 +85,21 @@ If you add new files or directories please include them in `tools/styler.R` and 
 
 ShinyApp searches for the following in the root folder:
 - server.R
-    - Contains shinyServer function for server side functions
-    - Renders once per user
+    - Contains shinyServer function for server side functions.
+    - Renders once per user.
 - ui.R
-    - Contains shinyUI function for front end rendering
-    - Renders once per R session
+    - Contains shinyUI function for front end rendering.
+    - Renders once per R session.
+- styles.css
+    - Used for class based global CSS styling
 - Covid_staffing_calculator.Rproj
-    - What is this for?
+    - Rstudio project config file.
 - functions/
-    - What is the main idea for this folder?
+    - Contains functions used in serve.R and UI.R.
 - data/
-    - What is the main idea for this folder?
+    - Contains the main application data.
+- tools/
+    - provides the user tools for linting/styling. See [Styling](#styling).
 
 ## Further Information
 
